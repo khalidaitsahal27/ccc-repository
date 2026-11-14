@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090d16">
+  <meta name="description" content="شاهد مقارنة مرئية بين ألف وعشرة آلاف ومئة ألف نقطة، نقطةً نقطة.">
+  <title>مقارنة 1K و10K و100K — QuickConvert</title>
+  <style>
+    :root { color-scheme:dark; font-family:"Segoe UI",Tahoma,Arial,sans-serif; background:#090d16; color:#f8fafc; }
+    * { box-sizing:border-box; }
+    body { min-height:100vh; margin:0; padding:16px; display:flex; flex-direction:column; }
+    button,a { font:inherit; }
+    .header,.main,.footer { width:min(1280px,100%); margin-inline:auto; }
+    .header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:14px; }
+    h1 { margin:0; font-size:clamp(20px,3vw,30px); letter-spacing:-.4px; background:linear-gradient(90deg,#facc15,#60a5fa,#34d399); color:transparent; background-clip:text; }
+    .subtitle { margin:5px 0 0; color:#94a3b8; font-size:13px; }
+    .controls { display:flex; flex-wrap:wrap; gap:8px; }
+    .controls button,.back { padding:9px 13px; border:1px solid #334155; border-radius:9px; color:#e2e8f0; background:#1e293b; text-decoration:none; font-size:13px; cursor:pointer; }
+    .controls button:hover,.back:hover { background:#334155; }
+    #btn-redraw { border-color:#4f46e5; background:#4f46e5; color:white; }
+    #btn-redraw:hover { background:#6366f1; }
+    .main { flex:1; display:grid; grid-template-columns:2fr 4fr 6fr; gap:14px; }
+    .panel { min-width:0; display:flex; flex-direction:column; padding:12px; border:1px solid #334155; border-radius:16px; background:#0f172a; }
+    .panel.yellow { border-color:#854d0e; }
+    .panel.blue { border-color:#1e40af; }
+    .panel.green { border-color:#065f46; }
+    .panel-head,.panel-foot { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .panel-head { margin-bottom:10px; padding-bottom:9px; border-bottom:1px solid #1e293b; }
+    .heading { display:flex; align-items:center; gap:8px; font-size:16px; font-weight:750; }
+    .yellow .heading,.yellow .count { color:#facc15; }
+    .blue .heading,.blue .count { color:#60a5fa; }
+    .green .heading,.green .count { color:#34d399; }
+    .dot-key { width:11px; height:11px; border-radius:50%; background:currentColor; }
+    .grid-size { padding:4px 7px; border-radius:6px; background:#1e293b; color:#94a3b8; font:11px ui-monospace,monospace; white-space:nowrap; }
+    .canvas-wrap { position:relative; flex:1; min-height:360px; overflow:hidden; border:1px solid #1e293b; border-radius:11px; background:#020617; }
+    canvas { display:block; width:100%; height:100%; image-rendering:pixelated; }
+    .panel-foot { margin-top:9px; color:#94a3b8; font-size:11px; }
+    .count { font-family:ui-monospace,monospace; font-weight:700; white-space:nowrap; }
+    .footer { margin-top:14px; padding:12px 15px; display:flex; justify-content:space-between; align-items:center; gap:10px; border:1px solid #1e293b; border-radius:11px; background:#0f172a; color:#cbd5e1; font-size:12px; }
+    #hover-info { min-height:18px; }
+    .total { white-space:nowrap; }
+    @media(max-width:850px) { body { padding:12px; } .main { grid-template-columns:1fr; } .canvas-wrap { min-height:270px; } .header { align-items:flex-start; flex-direction:column; } }
+    @media(max-width:480px) { .footer { align-items:flex-start; flex-direction:column; } .canvas-wrap { min-height:230px; } }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div>
+      <h1>مقارنة الحجم: 111,000 نقطة</h1>
+      <p class="subtitle">كل نقطة مرسومة بشكل منفرد لتوضيح الفرق بين الأعداد.</p>
+    </div>
+    <div class="controls">
+      <a class="back" href="index.html">العودة للرئيسية</a>
+      <button id="btn-highlight" type="button" aria-pressed="false">إظهار دليل الشبكة</button>
+      <button id="btn-redraw" type="button">إعادة الرسم</button>
+    </div>
+  </header>
+  <main class="main" aria-label="مقارنة مرئية للأعداد">
+    <section class="panel yellow" aria-label="ألف نقطة">
+      <div class="panel-head"><div class="heading"><span class="dot-key"></span><span>1,000</span></div><span class="grid-size">20 × 50</span></div>
+      <div class="canvas-wrap" id="container-1k"><canvas id="canvas-1k" aria-label="رسم ألف نقطة صفراء"></canvas></div>
+      <div class="panel-foot"><span>نقطة صفراء</span><span id="count-1k" class="count">1,000 / 1,000</span></div>
+    </section>
+    <section class="panel blue" aria-label="عشرة آلاف نقطة">
+      <div class="panel-head"><div class="heading"><span class="dot-key"></span><span>10,000</span></div><span class="grid-size">100 × 100</span></div>
+      <div class="canvas-wrap" id="container-10k"><canvas id="canvas-10k" aria-label="رسم عشرة آلاف نقطة زرقاء"></canvas></div>
+      <div class="panel-foot"><span>نقطة زرقاء · 10 أضعاف</span><span id="count-10k" class="count">10,000 / 10,000</span></div>
+    </section>
+    <section class="panel green" aria-label="مئة ألف نقطة">
+      <div class="panel-head"><div class="heading"><span class="dot-key"></span><span>100,000</span></div><span class="grid-size">400 × 250</span></div>
+      <div class="canvas-wrap" id="container-100k"><canvas id="canvas-100k" aria-label="رسم مئة ألف نقطة خضراء"></canvas></div>
+      <div class="panel-foot"><span>نقطة خضراء · 100 ضعف من 1K</span><span id="count-100k" class="count">100,000 / 100,000</span></div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div id="hover-info" aria-live="polite">مرّر المؤشر أو المس داخل أي مربع لاستكشاف النقاط.</div>
+    <div class="total">إجمالي النقاط: <strong>111,000</strong></div>
+  </footer>
+  <script>
+    (() => {
+      const sections = [
+        { id:'1k', total:1000, cols:20, rows:50, color:'#facc15', label:'الصفراء', canvas:document.getElementById('canvas-1k'), container:document.getElementById('container-1k'), counter:document.getElementById('count-1k'), current:1000 },
+        { id:'10k', total:10000, cols:100, rows:100, color:'#60a5fa', label:'الزرقاء', canvas:document.getElementById('canvas-10k'), container:document.getElementById('container-10k'), counter:document.getElementById('count-10k'), current:10000 },
+        { id:'100k', total:100000, cols:400, rows:250, color:'#34d399', label:'الخضراء', canvas:document.getElementById('canvas-100k'), container:document.getElementById('container-100k'), counter:document.getElementById('count-100k'), current:100000 }
+      ];
+      let showGrid = false;
+      let animationFrame = null;
+      const format = value => value.toLocaleString('en-US');
+
+      function render(section, limit = section.total) {
+        const rect = section.container.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        const dpr = window.devicePixelRatio || 1;
+        const width = Math.max(1, Math.floor(rect.width * dpr));
+        const height = Math.max(1, Math.floor(rect.height * dpr));
+        if (section.canvas.width !== width || section.canvas.height !== height) {
+          section.canvas.width = width;
+          section.canvas.height = height;
+        }
+        const ctx = section.canvas.getContext('2d');
+        ctx.clearRect(0, 0, width, height);
+        const padding = 8 * dpr;
+        const availW = width - padding * 2;
+        const availH = height - padding * 2;
+        const cellW = availW / section.cols;
+        const cellH = availH / section.rows;
+        if (showGrid) {
+          ctx.strokeStyle = 'rgba(255,255,255,.09)';
+          ctx.lineWidth = dpr;
+          ctx.beginPath();
+          for (let col = 0; col <= section.cols; col += 10) { const x = Math.round(padding + col * cellW) + .5; ctx.moveTo(x,padding); ctx.lineTo(x,padding + availH); }
+          for (let row = 0; row <= section.rows; row += 10) { const y = Math.round(padding + row * cellH) + .5; ctx.moveTo(padding,y); ctx.lineTo(padding + availW,y); }
+          ctx.stroke();
+        }
+        ctx.fillStyle = section.color;
+        const count = Math.min(limit, section.total);
+        const dot = Math.max(1, Math.floor(Math.min(cellW, cellH) * .58));
+        const offsetX = (cellW - dot) / 2;
+        const offsetY = (cellH - dot) / 2;
+        for (let i = 0; i < count; i++) {
+          const col = i % section.cols;
+          const row = Math.floor(i / section.cols);
+          ctx.fillRect(Math.round(padding + col * cellW + offsetX), Math.round(padding + row * cellH + offsetY), dot, dot);
+        }
+        section.counter.textContent = `${format(count)} / ${format(section.total)}`;
+      }
+      function renderAll() { sections.forEach(section => render(section, section.current)); }
+      function animateFill() {
+        if (animationFrame) cancelAnimationFrame(animationFrame);
+        const start = performance.now();
+        const duration = 1800;
+        function step(now) {
+          const progress = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          sections.forEach(section => { section.current = Math.floor(section.total * eased); render(section, section.current); });
+          if (progress < 1) animationFrame = requestAnimationFrame(step);
+          else { sections.forEach(section => { section.current = section.total; render(section); }); animationFrame = null; }
+        }
+        animationFrame = requestAnimationFrame(step);
+      }
+      function inspect(event, section) {
+        const rect = section.canvas.getBoundingClientRect();
+        const padding = 8;
+        const availW = rect.width - padding * 2;
+        const availH = rect.height - padding * 2;
+        const x = event.clientX - rect.left - padding;
+        const y = event.clientY - rect.top - padding;
+        if (x < 0 || y < 0 || x > availW || y > availH) return;
+        const col = Math.min(section.cols - 1, Math.floor(x / availW * section.cols));
+        const row = Math.min(section.rows - 1, Math.floor(y / availH * section.rows));
+        const index = row * section.cols + col + 1;
+        document.getElementById('hover-info').textContent = `النقطة ${format(index)} من ${format(section.total)} — الصف ${format(row + 1)}، العمود ${format(col + 1)} (${section.label})`;
+      }
+      sections.forEach(section => {
+        section.canvas.addEventListener('pointermove', event => inspect(event, section));
+        section.canvas.addEventListener('pointerdown', event => inspect(event, section));
+      });
+      const gridButton = document.getElementById('btn-highlight');
+      gridButton.addEventListener('click', () => {
+        showGrid = !showGrid;
+        gridButton.setAttribute('aria-pressed', String(showGrid));
+        gridButton.textContent = showGrid ? 'إخفاء دليل الشبكة' : 'إظهار دليل الشبكة';
+        renderAll();
+      });
+      document.getElementById('btn-redraw').addEventListener('click', animateFill);
+      window.addEventListener('resize', renderAll);
+      window.addEventListener('load', renderAll);
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
