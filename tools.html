@@ -28,6 +28,7 @@
     .icon { display:grid; place-items:center; flex:0 0 50px; width:50px; height:50px; border-radius:15px; color:var(--primary); background:#f0eeff; font-size:14px; font-weight:850; }
     .icon.green { color:#14856f; background:#e7faf5; }
     .icon.amber { color:#b87316; background:#fff5e7; }
+    .icon.blue { color:#2563eb; background:#eaf1ff; }
     .tool h3 { margin:0; font-size:18px; }
     .badge { display:inline-flex; width:max-content; margin-top:15px; padding:5px 10px; border-radius:20px; color:#27836e; background:#e7faf5; font-size:11px; font-weight:750; }
     .tool p { flex:1; margin:12px 0 18px; color:var(--muted); font-size:14px; line-height:1.8; }
@@ -41,27 +42,13 @@
 <body>
   <header><a class="brand" href="index.html"><span class="brand-mark">QC</span><span>QuickConvert</span></a><a class="button" href="index.html">العودة للرئيسية</a></header>
   <main>
-    <section class="hero"><span class="eyebrow">مركز الأدوات</span><h1>اختر الأداة المناسبة</h1><p class="intro">أدوات بسيطة لتحويل الصور والنصوص إلى PDF، تعمل في متصفحك. اختر «فتح الأداة» للانتقال مباشرةً إلى صفحة الاستخدام.</p></section>
+    <section class="hero"><span class="eyebrow">مركز الأدوات</span><h1>اختر الأداة المناسبة</h1><p class="intro">أدوات بسيطة لتحويل الملفات، تعمل في متصفحك. اختر «فتح الأداة» للانتقال مباشرةً إلى صفحة الاستخدام.</p></section>
     <h2>أدوات QuickConvert</h2>
     <div class="tools">
-      <article class="tool">
-        <div class="tool-top"><span class="icon" aria-hidden="true">JPG</span><h3>تحويل الصور إلى PDF</h3></div>
-        <span class="badge">JPG · PNG · صور متعددة</span>
-        <p>اجمع عدة صور في ملف PDF واحد، ورتّبها قبل التحويل. تتم معالجة الملفات في متصفحك.</p>
-        <a class="button" href="index.html#image-converter">فتح الأداة</a>
-      </article>
-      <article class="tool">
-        <div class="tool-top"><span class="icon green" aria-hidden="true">TXT</span><h3>تحويل TXT إلى PDF</h3></div>
-        <span class="badge">يدعم العربية</span>
-        <p>اكتب نصًا أو اختر ملف TXT، واضبط حجم الخط ومحاذاة النص وتباعد الأسطر قبل الحفظ.</p>
-        <a class="button" href="text-to-pdf.html">فتح الأداة</a>
-      </article>
-      <article class="tool">
-        <div class="tool-top"><span class="icon amber" aria-hidden="true">◉</span><h3>مقارنة النقاط</h3></div>
-        <span class="badge">تجربة تفاعلية</span>
-        <p>استكشف مقارنة مرئية بين مجموعات مختلفة من النقاط وتعرّف على مواقعها داخل الشبكة.</p>
-        <a class="button" href="comparison.html">فتح الصفحة</a>
-      </article>
+      <article class="tool"><div class="tool-top"><span class="icon" aria-hidden="true">JPG</span><h3>تحويل الصور إلى PDF</h3></div><span class="badge">JPG · PNG · صور متعددة</span><p>اجمع عدة صور في ملف PDF واحد، ورتّبها قبل التحويل. تتم معالجة الملفات في متصفحك.</p><a class="button" href="index.html#image-converter">فتح الأداة</a></article>
+      <article class="tool"><div class="tool-top"><span class="icon green" aria-hidden="true">TXT</span><h3>تحويل TXT إلى PDF</h3></div><span class="badge">يدعم العربية</span><p>اكتب نصًا أو اختر ملف TXT، واضبط حجم الخط ومحاذاة النص وتباعد الأسطر قبل الحفظ.</p><a class="button" href="text-to-pdf.html">فتح الأداة</a></article>
+      <article class="tool"><div class="tool-top"><span class="icon blue" aria-hidden="true">PDF</span><h3>تحويل PDF إلى TXT</h3></div><span class="badge">استخراج النص</span><p>استخرج النص من ملفات PDF النصية ونزّله كملف TXT. الملفات الممسوحة ضوئيًا تحتاج إلى OCR.</p><a class="button" href="pdf-to-txt.html">فتح الأداة</a></article>
+      <article class="tool"><div class="tool-top"><span class="icon amber" aria-hidden="true">◉</span><h3>مقارنة النقاط</h3></div><span class="badge">تجربة تفاعلية</span><p>استكشف مقارنة مرئية بين مجموعات مختلفة من النقاط وتعرّف على مواقعها داخل الشبكة.</p><a class="button" href="comparison.html">فتح الصفحة</a></article>
     </div>
     <div class="footer-links"><a class="button" href="all-pages.html">مكتبة جميع الصفحات</a><a class="button" href="index.html">العودة إلى الرئيسية</a></div>
   </main>
