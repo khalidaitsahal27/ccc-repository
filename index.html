@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#10162f">
-  <meta name="description" content="حوّل الصور والملفات النصية إلى PDF وتصفّح صفحات المشروع بسهولة.">
+  <meta name="description" content="حوّل الصور والملفات النصية إلى PDF وتصفّح أدوات QuickConvert.">
   <title>QuickConvert — تحويل الملفات إلى PDF</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
@@ -31,18 +31,21 @@
     .button.secondary:hover { background:#eeebff; }
     input[type=file] { display:block; max-width:100%; margin:15px auto; }
     .file-list { display:grid; gap:8px; margin-top:14px; }
-    .file-row,.page-card { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    .file-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border:1px solid var(--line); border-radius:12px; background:#fff; }
     .file-row button { padding:5px 10px; background:#68738a; }
     .actions { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; }
     #status { min-height:22px; margin-top:10px; color:#bd3445; }
     .tool-links { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin-top:20px; }
-    .tool-card { display:flex; align-items:center; gap:13px; padding:16px; border:1px solid var(--line); border-radius:13px; color:var(--ink); background:linear-gradient(145deg,#fff,#fbfaff); text-decoration:none; transition:.15s; }
-    .tool-card:hover { border-color:#c8c1ff; transform:translateY(-2px); }
-    .tool-icon { display:grid; place-items:center; flex:0 0 42px; height:42px; border-radius:12px; color:var(--primary); background:#f0eeff; font-weight:800; }
+    .tool-card { display:flex; flex-direction:column; gap:15px; padding:17px; border:1px solid var(--line); border-radius:14px; color:var(--ink); background:linear-gradient(145deg,#fff,#fbfaff); text-decoration:none; transition:.15s; }
+    .tool-card:hover { border-color:#c8c1ff; transform:translateY(-2px); box-shadow:0 12px 28px #5948e812; }
+    .tool-card-top { display:flex; align-items:center; gap:13px; }
+    .tool-icon { display:grid; place-items:center; flex:0 0 46px; height:46px; border-radius:14px; color:var(--primary); background:#f0eeff; font-size:14px; font-weight:850; }
     .tool-card strong,.tool-card small { display:block; }
-    .tool-card small { margin-top:4px; color:var(--muted); line-height:1.5; }
+    .tool-card small { margin-top:4px; color:var(--muted); line-height:1.6; }
+    .tool-card .button { width:100%; min-height:40px; padding:9px 14px; }
+    .tool-badge { margin-right:auto; padding:5px 9px; border-radius:20px; color:#27836e; background:#e7faf5; font-size:10px; font-weight:750; white-space:nowrap; }
     .page-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin-top:18px; }
-    .page-card { min-width:0; flex-direction:column; align-items:stretch; padding:16px; background:linear-gradient(145deg,#fff,#fbfaff); transition:border-color .15s,transform .15s,box-shadow .15s; }
+    .page-card { min-width:0; display:flex; flex-direction:column; gap:14px; padding:16px; border:1px solid var(--line); border-radius:12px; background:linear-gradient(145deg,#fff,#fbfaff); transition:.15s; }
     .page-card:hover { border-color:#c8c1ff; transform:translateY(-2px); box-shadow:0 10px 24px #5948e812; }
     .page-card-top { display:flex; align-items:center; gap:11px; }
     .page-icon { display:grid; place-items:center; flex:0 0 40px; width:40px; height:40px; border-radius:12px; color:var(--primary); background:#f0eeff; font-size:14px; font-weight:800; }
@@ -51,7 +54,7 @@
     .page-card .button { width:100%; padding:9px 14px; }
     .empty { grid-column:1/-1; padding:15px; border:1px dashed var(--line); border-radius:12px; color:var(--muted); text-align:center; }
     footer { padding:22px; color:var(--muted); text-align:center; font-size:13px; }
-    @media(max-width:600px) { header { padding:16px; } main { padding:22px 16px 42px; } section { padding:17px; } .section-heading { flex-direction:column; } .actions { align-items:stretch; flex-direction:column; } .actions button { width:100%; } .page-list { grid-template-columns:1fr; } }
+    @media(max-width:600px) { header { padding:16px; } main { padding:22px 16px 42px; } section { padding:17px; } .section-heading { flex-direction:column; } .actions { align-items:stretch; flex-direction:column; } .actions button { width:100%; } .page-list,.tool-links { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -60,14 +63,25 @@
     <div class="hero">
       <span class="eyebrow">أدوات مجانية وسهلة</span>
       <h1>مرحبًا بك في QuickConvert</h1>
-      <p class="intro">حوّل صورك أو ملفاتك النصية إلى PDF، وتصفّح صفحات HTML الموجودة في المشروع. تعمل الأدوات مباشرةً في متصفحك.</p>
-      <div class="tool-links">
-        <a class="tool-card" href="text-to-pdf.html"><span class="tool-icon">TXT</span><span><strong>تحويل TXT إلى PDF</strong><small>حوّل ملفًا نصيًا أو اكتب نصًا واحفظه PDF.</small></span></a>
-        <a class="tool-card" href="all-pages.html"><span class="tool-icon">☷</span><span><strong>مكتبة الصفحات</strong><small>تصفّح جميع صفحات HTML في المشروع.</small></span></a>
+      <p class="intro">حوّل صورك أو ملفاتك النصية إلى PDF، واستكشف أدوات المشروع وصفحاته من مكان واحد.</p>
+      <div class="tool-links" aria-label="الأدوات">
+        <article class="tool-card" id="image-tool">
+          <div class="tool-card-top"><span class="tool-icon" aria-hidden="true">JPG</span><span><strong>تحويل الصور إلى PDF</strong><small>اجمع صور JPG وPNG في ملف PDF واحد.</small></span><span class="tool-badge">سريع ومجاني</span></div>
+          <a class="button" href="#image-converter">فتح الأداة</a>
+        </article>
+        <article class="tool-card">
+          <div class="tool-card-top"><span class="tool-icon" aria-hidden="true">TXT</span><span><strong>تحويل TXT إلى PDF</strong><small>اكتب نصًا أو اختر ملفًا واضبط تنسيق العربية.</small></span><span class="tool-badge">يدعم العربية</span></div>
+          <a class="button" href="text-to-pdf.html">فتح الأداة</a>
+        </article>
+        <article class="tool-card">
+          <div class="tool-card-top"><span class="tool-icon" aria-hidden="true">☷</span><span><strong>مكتبة الصفحات</strong><small>تصفّح كل صفحات HTML في المشروع.</small></span><span class="tool-badge">محدّثة تلقائيًا</span></div>
+          <a class="button" href="all-pages.html">فتح المكتبة</a>
+        </article>
       </div>
+      <p><a class="button secondary" href="tools.html">استكشف صفحة الأدوات ←</a></p>
     </div>
 
-    <section aria-labelledby="converter-title">
+    <section id="image-converter" aria-labelledby="converter-title">
       <h2 id="converter-title">تحويل الصور إلى PDF</h2>
       <p class="muted">اختر صور JPG أو PNG، ثم أنشئ ملف PDF مباشرةً في متصفحك.</p>
       <div class="dropzone"><label for="image-files">اختر صورة واحدة أو عدة صور:</label><input id="image-files" type="file" accept="image/jpeg,image/png,.jpg,.jpeg,.png" multiple></div>
@@ -77,96 +91,77 @@
     </section>
 
     <section aria-labelledby="pages-title">
-      <div class="section-heading">
-        <div><h2 id="pages-title">صفحات المشروع</h2><p class="muted">افتح أي صفحة مباشرةً، أو انتقل إلى المكتبة لعرض جميع الصفحات.</p></div>
-        <a class="button secondary" href="all-pages.html">عرض كل الصفحات ←</a>
-      </div>
+      <div class="section-heading"><div><h2 id="pages-title">صفحات المشروع</h2><p class="muted">افتح صفحة مباشرةً، أو انتقل إلى المكتبة لعرض جميع الصفحات.</p></div><a class="button secondary" href="all-pages.html">عرض كل الصفحات ←</a></div>
       <div class="page-list" id="page-list" aria-live="polite"><div class="empty">جارٍ تحميل صفحات المشروع…</div></div>
     </section>
   </main>
   <footer>QuickConvert — صفحات المشروع وأدواته.</footer>
   <script>
     (() => {
-      const input = document.getElementById('image-files');
-      const list = document.getElementById('file-list');
-      const count = document.getElementById('count');
-      const convert = document.getElementById('convert');
-      const status = document.getElementById('status');
-      let files = [];
-
+      const input=document.getElementById('image-files');
+      const list=document.getElementById('file-list');
+      const count=document.getElementById('count');
+      const convert=document.getElementById('convert');
+      const status=document.getElementById('status');
+      let files=[];
       function renderFiles() {
         list.replaceChildren();
-        files.forEach((file, index) => {
-          const row = document.createElement('div'); row.className = 'file-row';
-          const name = document.createElement('span'); name.textContent = file.name;
-          const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = 'إزالة';
-          remove.setAttribute('aria-label', `إزالة ${file.name}`);
-          remove.addEventListener('click', () => { files.splice(index, 1); renderFiles(); });
-          row.append(name, remove); list.append(row);
+        files.forEach((file,index)=>{
+          const row=document.createElement('div'); row.className='file-row';
+          const name=document.createElement('span'); name.textContent=file.name;
+          const remove=document.createElement('button'); remove.type='button'; remove.textContent='إزالة'; remove.setAttribute('aria-label',`إزالة ${file.name}`);
+          remove.addEventListener('click',()=>{files.splice(index,1);renderFiles();});
+          row.append(name,remove); list.append(row);
         });
-        count.textContent = files.length ? `${files.length} صورة محددة` : 'لم يتم اختيار صور';
-        convert.disabled = files.length === 0;
+        count.textContent=files.length?`${files.length} صورة محددة`:'لم يتم اختيار صور';
+        convert.disabled=files.length===0;
       }
-
-      input.addEventListener('change', () => {
-        const selected = Array.from(input.files || []);
-        const valid = selected.filter(file => /image\/(jpeg|png)/i.test(file.type) || /\.(jpe?g|png)$/i.test(file.name));
-        status.textContent = selected.length !== valid.length ? 'تم تجاهل الملفات غير المدعومة. اختر صور JPG أو PNG.' : '';
-        files = [...files, ...valid]; input.value = ''; renderFiles();
+      input.addEventListener('change',()=>{
+        const selected=Array.from(input.files||[]);
+        const valid=selected.filter(file=>/image\/(jpeg|png)/i.test(file.type)||/\.(jpe?g|png)$/i.test(file.name));
+        status.textContent=selected.length!==valid.length?'تم تجاهل الملفات غير المدعومة. اختر صور JPG أو PNG.':'';
+        files=[...files,...valid]; input.value=''; renderFiles();
       });
-
-      convert.addEventListener('click', async () => {
-        if (!files.length) return;
-        if (!window.jspdf || !window.jspdf.jsPDF) { status.textContent = 'تعذّر تحميل مكتبة PDF. تحقق من اتصال الإنترنت وحاول مجددًا.'; return; }
-        convert.disabled = true; convert.textContent = 'جارٍ إنشاء الملف…'; status.textContent = '';
+      convert.addEventListener('click',async()=>{
+        if(!files.length)return;
+        if(!window.jspdf||!window.jspdf.jsPDF){status.textContent='تعذّر تحميل مكتبة PDF. تحقق من اتصال الإنترنت وحاول مجددًا.';return;}
+        convert.disabled=true; convert.textContent='جارٍ إنشاء الملف…'; status.textContent='';
         try {
-          const { jsPDF } = window.jspdf; let pdf;
-          for (let i = 0; i < files.length; i++) {
-            const dataUrl = await new Promise((resolve, reject) => {
-              const reader = new FileReader(); reader.onload = () => resolve(reader.result);
-              reader.onerror = () => reject(new Error(`تعذرت قراءة الملف: ${files[i].name}`)); reader.readAsDataURL(files[i]);
-            });
-            const image = await new Promise((resolve, reject) => {
-              const img = new Image(); img.onload = () => resolve(img);
-              img.onerror = () => reject(new Error(`تعذر فتح الملف: ${files[i].name}`)); img.src = dataUrl;
-            });
-            const orientation = image.width > image.height ? 'landscape' : 'portrait';
-            if (!pdf) pdf = new jsPDF({ orientation, unit: 'pt', format: 'a4' }); else pdf.addPage('a4', orientation);
-            const pageWidth = pdf.internal.pageSize.getWidth(); const pageHeight = pdf.internal.pageSize.getHeight();
-            const scale = Math.min(pageWidth / image.width, pageHeight / image.height);
-            const width = image.width * scale; const height = image.height * scale;
-            pdf.addImage(dataUrl, files[i].type === 'image/png' ? 'PNG' : 'JPEG', (pageWidth - width) / 2, (pageHeight - height) / 2, width, height);
+          const {jsPDF}=window.jspdf; let pdf;
+          for(let i=0;i<files.length;i++){
+            const dataUrl=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error(`تعذرت قراءة الملف: ${files[i].name}`));reader.readAsDataURL(files[i]);});
+            const image=await new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error(`تعذر فتح الملف: ${files[i].name}`));img.src=dataUrl;});
+            const orientation=image.width>image.height?'landscape':'portrait';
+            if(!pdf)pdf=new jsPDF({orientation,unit:'pt',format:'a4'});else pdf.addPage('a4',orientation);
+            const pageWidth=pdf.internal.pageSize.getWidth();const pageHeight=pdf.internal.pageSize.getHeight();
+            const scale=Math.min(pageWidth/image.width,pageHeight/image.height);const width=image.width*scale;const height=image.height*scale;
+            pdf.addImage(dataUrl,files[i].type==='image/png'?'PNG':'JPEG',(pageWidth-width)/2,(pageHeight-height)/2,width,height);
           }
           pdf.save('images.pdf');
-        } catch (error) { status.textContent = error.message || 'حدث خطأ أثناء إنشاء ملف PDF.'; }
-        finally { convert.disabled = files.length === 0; convert.textContent = 'تحويل إلى PDF'; }
+        } catch(error){status.textContent=error.message||'حدث خطأ أثناء إنشاء ملف PDF.';}
+        finally{convert.disabled=files.length===0;convert.textContent='تحويل إلى PDF';}
       });
-
-      async function loadPages() {
-        const pageList = document.getElementById('page-list');
-        try {
-          const response = await fetch('https://api.github.com/repos/khalidaitsahal27/ccc-repository/git/trees/main?recursive=1', { headers: { Accept: 'application/vnd.github+json' } });
-          if (!response.ok) throw new Error('تعذر جلب قائمة الصفحات من GitHub.');
-          const data = await response.json();
-          const pages = (data.tree || []).filter(item => item.type === 'blob' && item.path.toLowerCase().endsWith('.html') && !['index.html', 'all-pages.html'].includes(item.path.toLowerCase())).map(item => item.path).sort((a, b) => a.localeCompare(b, 'ar'));
+      async function loadPages(){
+        const pageList=document.getElementById('page-list');
+        try{
+          const response=await fetch('https://api.github.com/repos/khalidaitsahal27/ccc-repository/git/trees/main?recursive=1',{headers:{Accept:'application/vnd.github+json'}});
+          if(!response.ok)throw new Error('تعذر جلب قائمة الصفحات من GitHub.');
+          const data=await response.json();
+          const pages=(data.tree||[]).filter(item=>item.type==='blob'&&item.path.toLowerCase().endsWith('.html')&&!['index.html','all-pages.html','tools.html'].includes(item.path.toLowerCase())).map(item=>item.path).sort((a,b)=>a.localeCompare(b,'ar'));
           pageList.replaceChildren();
-          if (!pages.length) { const empty = document.createElement('div'); empty.className = 'empty'; empty.textContent = 'لا توجد صفحات إضافية حاليًا.'; pageList.append(empty); return; }
-          pages.forEach(path => {
-            const card = document.createElement('article'); card.className = 'page-card';
-            const top = document.createElement('div'); top.className = 'page-card-top';
-            const icon = document.createElement('span'); icon.className = 'page-icon'; icon.setAttribute('aria-hidden', 'true'); icon.textContent = path.endsWith('text-to-pdf.html') ? 'TXT' : 'HTML';
-            const titleWrap = document.createElement('div'); titleWrap.style.minWidth = '0';
-            const title = document.createElement('div'); title.className = 'page-title';
-            title.textContent = path === 'comparison.html' ? 'مقارنة النقاط' : path === 'text-to-pdf.html' ? 'تحويل TXT إلى PDF' : path.split('/').pop().replace(/\.html$/i, '').replace(/[-_]/g, ' ');
-            const filePath = document.createElement('span'); filePath.className = 'page-path'; filePath.textContent = path;
-            titleWrap.append(title, filePath); top.append(icon, titleWrap);
-            const link = document.createElement('a'); link.className = 'button'; link.textContent = 'فتح الصفحة'; link.href = `./${path.split('/').map(encodeURIComponent).join('/')}`;
-            card.append(top, link); pageList.append(card);
+          if(!pages.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='لا توجد صفحات إضافية حاليًا.';pageList.append(empty);return;}
+          pages.forEach(path=>{
+            const card=document.createElement('article');card.className='page-card';
+            const top=document.createElement('div');top.className='page-card-top';
+            const icon=document.createElement('span');icon.className='page-icon';icon.setAttribute('aria-hidden','true');icon.textContent=path==='text-to-pdf.html'?'TXT':'HTML';
+            const titleWrap=document.createElement('div');titleWrap.style.minWidth='0';
+            const title=document.createElement('div');title.className='page-title';title.textContent=path==='comparison.html'?'مقارنة النقاط':path==='text-to-pdf.html'?'تحويل TXT إلى PDF':path.split('/').pop().replace(/\.html$/i,'').replace(/[-_]/g,' ');
+            const filePath=document.createElement('span');filePath.className='page-path';filePath.textContent=path;
+            titleWrap.append(title,filePath);top.append(icon,titleWrap);
+            const link=document.createElement('a');link.className='button';link.textContent='فتح الصفحة';link.href=`./${path.split('/').map(encodeURIComponent).join('/')}`;
+            card.append(top,link);pageList.append(card);
           });
-        } catch (error) {
-          pageList.replaceChildren(); const message = document.createElement('div'); message.className = 'empty';
-          message.textContent = `${error.message} يمكنك تصفح صفحات المستودع من صفحة المكتبة.`; pageList.append(message);
-        }
+        }catch(error){pageList.replaceChildren();const message=document.createElement('div');message.className='empty';message.textContent=`${error.message} يمكنك تصفح صفحات المستودع من صفحة المكتبة.`;pageList.append(message);}
       }
       loadPages();
     })();
