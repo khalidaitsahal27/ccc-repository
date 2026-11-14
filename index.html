@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="Convert JPG images to a PDF in your browser. Simple, fast, and private.">
-  <title>JPG to PDF — Simple Image Converter</title>
+  <meta name="theme-color" content="#10162f">
+  <meta name="description" content="حوّل صور JPG وPNG إلى ملف PDF بسهولة وأمان، مباشرةً من متصفحك.">
+  <title>حوّل الصور إلى PDF — QuickConvert</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root {
       color-scheme: light;
-      --ink: #172033;
-      --muted: #647084;
-      --blue: #3659e3;
-      --blue-dark: #2848c7;
-      --line: #e5e9f1;
+      --ink: #17213d;
+      --muted: #69748c;
+      --primary: #5948e8;
+      --primary-dark: #4535ce;
+      --mint: #28c6a4;
+      --line: #e7e9f2;
       --surface: #f7f8fc;
+      --navy: #10162f;
     }
     * { box-sizing: border-box; }
     body {
@@ -23,80 +25,116 @@
       min-width: 320px;
       color: var(--ink);
       background: #fff;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
     }
     button, input { font: inherit; }
     .topbar {
-      height: 72px;
+      height: 76px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 1120px;
+      max-width: 1160px;
       margin: auto;
-      padding: 0 24px;
-      border-bottom: 1px solid #f0f1f5;
+      padding: 0 26px;
     }
-    .brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 750; letter-spacing: -.4px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-size: 19px; font-weight: 800; letter-spacing: -.3px; }
     .brand-mark {
-      display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px;
-      color: white; background: var(--blue); font-size: 15px; font-weight: 800;
+      display: grid; place-items: center; width: 39px; height: 39px; border-radius: 13px;
+      color: white; background: linear-gradient(145deg, #7666ff, #4e3cdb); font-size: 12px; font-weight: 850;
+      box-shadow: 0 6px 16px #5948e840;
     }
-    .privacy { color: var(--muted); font-size: 13px; }
-    main { max-width: 900px; margin: 0 auto; padding: 58px 24px 72px; }
-    .intro { text-align: center; margin-bottom: 34px; }
-    .eyebrow { color: var(--blue); font-size: 12px; font-weight: 750; text-transform: uppercase; letter-spacing: 1.3px; }
-    h1 { margin: 12px 0 10px; font-size: clamp(32px, 5vw, 46px); line-height: 1.1; letter-spacing: -1.8px; }
-    .intro p { max-width: 550px; margin: 0 auto; color: var(--muted); font-size: 16px; line-height: 1.65; }
+    .top-link { color: var(--muted); font-size: 13px; }
+    .top-link span { color: var(--mint); margin-left: 5px; }
+    main { max-width: 1020px; margin: auto; padding: 48px 24px 70px; }
+    .hero { text-align: center; margin: 0 auto 34px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 7px; padding: 8px 13px; border: 1px solid #e8e5ff;
+      border-radius: 30px; color: var(--primary); background: #f7f5ff; font-size: 12px; font-weight: 750;
+    }
+    .eyebrow svg { width: 15px; height: 15px; }
+    h1 { margin: 18px 0 12px; font-size: clamp(36px, 6vw, 58px); line-height: 1.15; letter-spacing: -1.7px; }
+    h1 .gradient { color: var(--primary); }
+    .hero p { max-width: 570px; margin: 0 auto; color: var(--muted); font-size: 16px; line-height: 1.9; }
     .converter {
-      max-width: 700px; margin: 0 auto; padding: 28px;
-      border: 1px solid var(--line); border-radius: 18px; background: white;
-      box-shadow: 0 12px 40px rgba(27, 42, 78, .07);
+      max-width: 760px; margin: 0 auto; padding: 27px;
+      border: 1px solid var(--line); border-radius: 20px; background: white;
+      box-shadow: 0 22px 65px rgba(27, 35, 75, .09);
     }
     .dropzone {
-      min-height: 240px; padding: 32px 18px; display: flex; flex-direction: column;
+      min-height: 245px; padding: 30px 18px; display: flex; flex-direction: column;
       align-items: center; justify-content: center; text-align: center;
-      border: 2px dashed #cbd3e3; border-radius: 13px; background: #fbfcff;
-      transition: border-color .2s, background .2s;
+      border: 2px dashed #d4d7e8; border-radius: 15px; background: linear-gradient(145deg, #fbfaff, #f8fbff);
+      transition: border-color .2s, background .2s, transform .2s;
     }
-    .dropzone.dragging { border-color: var(--blue); background: #f1f4ff; }
-    .upload-icon { width: 52px; height: 52px; display: grid; place-items: center; margin-bottom: 15px; border-radius: 15px; color: var(--blue); background: #edf0ff; }
-    .upload-icon svg { width: 25px; height: 25px; }
+    .dropzone.dragging { border-color: var(--primary); background: #f3f1ff; transform: scale(1.005); }
+    .upload-icon { width: 58px; height: 58px; display: grid; place-items: center; margin-bottom: 14px; border-radius: 18px; color: var(--primary); background: #eeebff; }
+    .upload-icon svg { width: 27px; height: 27px; }
     .dropzone strong { font-size: 17px; }
     .dropzone p { margin: 7px 0 16px; color: var(--muted); font-size: 14px; }
     .primary, .download {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      min-height: 44px; padding: 0 19px; border: 0; border-radius: 9px;
-      color: white; background: var(--blue); font-weight: 700; cursor: pointer;
-      transition: background .2s, transform .2s;
+      min-height: 46px; padding: 0 20px; border: 0; border-radius: 10px;
+      color: white; background: linear-gradient(135deg, #6655f0, #4d3bd6); font-weight: 750; cursor: pointer;
+      box-shadow: 0 7px 17px #5948e833; transition: background .2s, transform .2s, box-shadow .2s;
     }
-    .primary:hover, .download:hover { background: var(--blue-dark); transform: translateY(-1px); }
-    .primary:disabled { opacity: .48; cursor: not-allowed; transform: none; }
+    .primary:hover, .download:hover { background: linear-gradient(135deg, #5948e8, #4030c4); transform: translateY(-1px); box-shadow: 0 9px 20px #5948e844; }
+    .primary:disabled { opacity: .48; cursor: not-allowed; transform: none; box-shadow: none; }
     .file-hint { margin-top: 12px; color: #8992a3; font-size: 12px; }
     #file-input { display: none; }
     .file-list { display: grid; gap: 10px; margin-top: 18px; }
-    .file-row { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 10px; border: 1px solid var(--line); border-radius: 10px; }
-    .thumb { width: 48px; height: 48px; flex: 0 0 48px; object-fit: cover; border-radius: 7px; background: var(--surface); }
-    .file-info { min-width: 0; flex: 1; }
-    .file-name { overflow: hidden; color: var(--ink); font-size: 13px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+    .file-row { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 10px; border: 1px solid var(--line); border-radius: 11px; background: #fff; }
+    .thumb { width: 48px; height: 48px; flex: 0 0 48px; object-fit: cover; border-radius: 8px; background: var(--surface); }
+    .file-info { min-width: 0; flex: 1; text-align: right; }
+    .file-name { overflow: hidden; color: var(--ink); font-size: 13px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
     .file-size { margin-top: 4px; color: var(--muted); font-size: 12px; }
+    .reorder { width: 31px; height: 31px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); background: white; cursor: pointer; }
+    .reorder:hover:not(:disabled) { color: var(--primary); border-color: #bdb6ff; background: #f7f5ff; }
+    .reorder:disabled { opacity: .35; cursor: default; }
     .remove { width: 34px; height: 34px; flex: 0 0 34px; border: 0; border-radius: 8px; color: #7a8495; background: transparent; font-size: 20px; cursor: pointer; }
     .remove:hover { color: #bd3445; background: #fff1f2; }
     .actions { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 20px; }
     .count { color: var(--muted); font-size: 13px; }
     .status { min-height: 20px; margin-top: 12px; color: #bd3445; font-size: 13px; }
-    .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; max-width: 700px; margin: 42px auto 0; }
-    .step { display: flex; align-items: flex-start; gap: 11px; }
-    .step-num { display: grid; place-items: center; width: 27px; height: 27px; flex: 0 0 27px; border-radius: 50%; color: var(--blue); background: #edf0ff; font-size: 12px; font-weight: 750; }
-    .step strong { display: block; margin: 2px 0 4px; font-size: 13px; }
-    .step span:last-child { color: var(--muted); font-size: 12px; line-height: 1.5; }
-    footer { padding: 20px 24px 30px; color: #8992a3; text-align: center; font-size: 12px; }
-    @media (max-width: 600px) {
-      .topbar { height: 62px; padding: 0 18px; }
-      .privacy { font-size: 11px; }
-      main { padding: 42px 16px 54px; }
-      .converter { padding: 16px; }
+    .stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); max-width: 760px; margin: 24px auto 0;
+      padding: 20px 10px; border: 1px solid var(--line); border-radius: 15px; background: #fff;
+      box-shadow: 0 8px 28px rgba(27, 35, 75, .04);
+    }
+    .stat { display: flex; align-items: center; justify-content: center; gap: 11px; padding: 4px 12px; }
+    .stat + .stat { border-right: 1px solid var(--line); }
+    .stat-icon { display: grid; place-items: center; width: 39px; height: 39px; flex: 0 0 39px; border-radius: 12px; color: var(--primary); background: #f0eeff; }
+    .stat-icon.green { color: #149a7e; background: #e7faf5; }
+    .stat-icon svg { width: 19px; height: 19px; }
+    .stat strong { display: block; font-size: 14px; }
+    .stat small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .how { max-width: 760px; margin: 57px auto 0; }
+    .section-heading { margin: 0 0 7px; text-align: center; font-size: 25px; letter-spacing: -.5px; }
+    .section-subtitle { margin: 0 0 26px; color: var(--muted); text-align: center; font-size: 14px; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .step { position: relative; padding: 23px 20px; border: 1px solid var(--line); border-radius: 15px; background: #fff; }
+    .step-icon { display: grid; place-items: center; width: 45px; height: 45px; margin-bottom: 16px; border-radius: 14px; color: var(--primary); background: #f0eeff; }
+    .step:nth-child(2) .step-icon { color: #149a7e; background: #e7faf5; }
+    .step:nth-child(3) .step-icon { color: #db8b25; background: #fff5e7; }
+    .step-icon svg { width: 22px; height: 22px; }
+    .step-number { position: absolute; top: 22px; left: 18px; color: #a4a9b8; font-size: 12px; font-weight: 800; }
+    .step strong { display: block; margin-bottom: 7px; font-size: 14px; }
+    .step p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
+    .privacy-note { display: flex; align-items: center; justify-content: center; gap: 9px; max-width: 760px; margin: 23px auto 0; padding: 13px 15px; border-radius: 11px; color: #27836e; background: #effaf6; font-size: 12px; }
+    .privacy-note svg { width: 17px; height: 17px; flex: 0 0 17px; }
+    footer { padding: 28px 20px 32px; color: #8992a3; text-align: center; font-size: 12px; }
+    @media (max-width: 650px) {
+      .topbar { height: 66px; padding: 0 18px; }
+      .top-link { font-size: 11px; }
+      main { padding: 35px 16px 52px; }
+      .converter { padding: 15px; }
       .dropzone { min-height: 220px; }
-      .how { grid-template-columns: 1fr; gap: 15px; margin-top: 30px; }
+      .stats { padding: 14px 5px; }
+      .stat { flex-direction: column; gap: 7px; padding: 3px 4px; text-align: center; }
+      .stat strong { font-size: 12px; }
+      .stat small { font-size: 10px; }
+      .steps { grid-template-columns: 1fr; gap: 10px; }
+      .step { padding: 17px; }
+      .step-icon { margin-bottom: 10px; }
       .actions { align-items: stretch; flex-direction: column; }
       .actions .primary { width: 100%; }
       .count { text-align: center; }
@@ -106,43 +144,54 @@
 <body>
   <header class="topbar">
     <div class="brand"><span class="brand-mark">PDF</span><span>QuickConvert</span></div>
-    <div class="privacy">🔒 Your files stay on your device</div>
+    <div class="top-link"><span>●</span> تحويل آمن ومجاني</div>
   </header>
 
   <main>
-    <section class="intro">
-      <div class="eyebrow">Free online tool</div>
-      <h1>JPG to PDF</h1>
-      <p>Turn your images into a PDF in seconds. Add one or more JPGs, arrange them in order, and download your document.</p>
+    <section class="hero">
+      <div class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/><path d="m19 15 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z"/></svg> أداة مجانية وسهلة الاستخدام</div>
+      <h1>حوّل صورك إلى <span class="gradient">PDF</span></h1>
+      <p>اجمع صور JPG أو PNG في ملف PDF واحد خلال ثوانٍ. اختر صورك، رتّبها كما تريد، ثم نزّل ملفك بكل سهولة.</p>
     </section>
 
-    <section class="converter" aria-label="JPG to PDF converter">
-      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Choose JPG images or drop them here">
+    <section class="converter" aria-label="أداة تحويل الصور إلى PDF">
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="اختر الصور أو اسحبها إلى هنا">
         <div class="upload-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>
         </div>
-        <strong>Drop your images here</strong>
-        <p>or choose files from your device</p>
-        <button class="primary" id="choose-button" type="button">Choose JPG images</button>
-        <div class="file-hint">JPG, JPEG, and PNG · Multiple files supported</div>
+        <strong>اسحب الصور وأفلتها هنا</strong>
+        <p>أو اختر الصور من جهازك</p>
+        <button class="primary" id="choose-button" type="button">اختيار الصور</button>
+        <div class="file-hint">JPG وJPEG وPNG · يمكنك اختيار عدة صور</div>
       </div>
       <input id="file-input" type="file" accept="image/jpeg,image/png,.jpg,.jpeg,.png" multiple>
       <div class="file-list" id="file-list" aria-live="polite"></div>
       <div class="actions">
-        <span class="count" id="count">No images selected</span>
-        <button class="primary" id="convert-button" type="button" disabled>Convert to PDF <span aria-hidden="true">→</span></button>
+        <span class="count" id="count">لم يتم اختيار صور</span>
+        <button class="primary" id="convert-button" type="button" disabled>تحويل إلى PDF <span aria-hidden="true">←</span></button>
       </div>
       <div class="status" id="status" role="status" aria-live="polite"></div>
     </section>
 
-    <section class="how" aria-label="How it works">
-      <div class="step"><span class="step-num">1</span><div><strong>Choose images</strong><span>Select JPG or PNG files from your device.</span></div></div>
-      <div class="step"><span class="step-num">2</span><div><strong>Convert to PDF</strong><span>Your images become pages in one PDF.</span></div></div>
-      <div class="step"><span class="step-num">3</span><div><strong>Download</strong><span>Save your new PDF instantly.</span></div></div>
+    <section class="stats" aria-label="مميزات الأداة">
+      <div class="stat"><span class="stat-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg></span><div><strong>خصوصية تامة</strong><small>صورك لا تغادر جهازك</small></div></div>
+      <div class="stat"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><strong>3 خطوات بسيطة</strong><small>اختيار، تحويل، تنزيل</small></div></div>
+      <div class="stat"><span class="stat-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18m9-9H3"/><circle cx="12" cy="12" r="9"/></svg></span><div><strong>مجانية بالكامل</strong><small>من دون تسجيل أو رفع</small></div></div>
+    </section>
+
+    <section class="how" aria-label="طريقة الاستخدام">
+      <h2 class="section-heading">كيف تعمل الأداة؟</h2>
+      <p class="section-subtitle">ملف PDF جاهز في ثلاث خطوات سهلة</p>
+      <div class="steps">
+        <article class="step"><span class="step-number">١</span><span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></span><strong>اختر الصور</strong><p>اختر صورة واحدة أو عدة صور JPG وPNG من جهازك.</p></article>
+        <article class="step"><span class="step-number">٢</span><span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v6h6M9 15h6m-6 3h6"/></svg></span><strong>رتّب وحوّل</strong><p>غيّر ترتيب الصور حسب رغبتك، ثم اضغط على زر التحويل.</p></article>
+        <article class="step"><span class="step-number">٣</span><span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5m-5 5V3"/></svg></span><strong>نزّل ملفك</strong><p>سيُحمّل ملف PDF مباشرةً إلى جهازك، جاهزًا للاستخدام.</p></article>
+      </div>
+      <div class="privacy-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 5v2"/></svg> تتم معالجة الصور داخل متصفحك فقط، ولا يتم رفعها إلى أي خادم.</div>
     </section>
   </main>
 
-  <footer>Simple, secure image conversion. Files are processed in your browser.</footer>
+  <footer>QuickConvert — تحويل صورك إلى PDF بسرعة وأمان.</footer>
 
   <script>
     (() => {
@@ -156,13 +205,13 @@
       let files = [];
 
       const formatSize = (bytes) => bytes < 1024 * 1024
-        ? `${Math.max(1, Math.round(bytes / 1024))} KB`
-        : `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+        ? `${Math.max(1, Math.round(bytes / 1024))} كيلوبايت`
+        : `${(bytes / (1024 * 1024)).toFixed(1)} ميغابايت`;
 
       function addFiles(selected) {
         const valid = Array.from(selected).filter(file => /image\/(jpeg|png)/i.test(file.type) || /\.(jpe?g|png)$/i.test(file.name));
         if (!valid.length && selected.length) {
-          status.textContent = 'Please choose JPG, JPEG, or PNG images.';
+          status.textContent = 'يرجى اختيار صور JPG أو JPEG أو PNG.';
           return;
         }
         files = [...files, ...valid];
@@ -188,20 +237,42 @@
           size.className = 'file-size';
           size.textContent = formatSize(file.size);
           info.append(name, size);
+
+          const moveUp = document.createElement('button');
+          moveUp.className = 'reorder';
+          moveUp.type = 'button';
+          moveUp.textContent = '↑';
+          moveUp.setAttribute('aria-label', `نقل ${file.name} للأعلى`);
+          moveUp.disabled = index === 0;
+          moveUp.addEventListener('click', () => {
+            [files[index - 1], files[index]] = [files[index], files[index - 1]];
+            renderFiles();
+          });
+          const moveDown = document.createElement('button');
+          moveDown.className = 'reorder';
+          moveDown.type = 'button';
+          moveDown.textContent = '↓';
+          moveDown.setAttribute('aria-label', `نقل ${file.name} للأسفل`);
+          moveDown.disabled = index === files.length - 1;
+          moveDown.addEventListener('click', () => {
+            [files[index], files[index + 1]] = [files[index + 1], files[index]];
+            renderFiles();
+          });
+
           const remove = document.createElement('button');
           remove.className = 'remove';
           remove.type = 'button';
-          remove.setAttribute('aria-label', `Remove ${file.name}`);
+          remove.setAttribute('aria-label', `إزالة ${file.name}`);
           remove.textContent = '×';
           remove.addEventListener('click', () => {
             URL.revokeObjectURL(image.src);
             files.splice(index, 1);
             renderFiles();
           });
-          row.append(image, info, remove);
+          row.append(image, info, moveUp, moveDown, remove);
           list.append(row);
         });
-        count.textContent = files.length ? `${files.length} image${files.length === 1 ? '' : 's'} selected` : 'No images selected';
+        count.textContent = files.length ? `${files.length} ${files.length === 1 ? 'صورة محددة' : 'صور محددة'}` : 'لم يتم اختيار صور';
         convertButton.disabled = files.length === 0;
       }
 
@@ -227,11 +298,11 @@
       convertButton.addEventListener('click', async () => {
         if (!files.length) return;
         if (!window.jspdf || !window.jspdf.jsPDF) {
-          status.textContent = 'The PDF library could not load. Check your internet connection and try again.';
+          status.textContent = 'تعذّر تحميل مكتبة PDF. تحقق من اتصالك بالإنترنت ثم حاول مجددًا.';
           return;
         }
         convertButton.disabled = true;
-        convertButton.textContent = 'Creating PDF…';
+        convertButton.textContent = 'جارٍ إنشاء ملف PDF…';
         status.textContent = '';
         try {
           const { jsPDF } = window.jspdf;
@@ -240,13 +311,13 @@
             const dataUrl = await new Promise((resolve, reject) => {
               const reader = new FileReader();
               reader.onload = () => resolve(reader.result);
-              reader.onerror = () => reject(new Error(`Could not read ${files[i].name}`));
+              reader.onerror = () => reject(new Error(`تعذرت قراءة الملف: ${files[i].name}`));
               reader.readAsDataURL(files[i]);
             });
             const image = await new Promise((resolve, reject) => {
               const img = new Image();
               img.onload = () => resolve(img);
-              img.onerror = () => reject(new Error(`Could not open ${files[i].name}`));
+              img.onerror = () => reject(new Error(`تعذر فتح الملف: ${files[i].name}`));
               img.src = dataUrl;
             });
             const orientation = image.width > image.height ? 'landscape' : 'portrait';
@@ -262,10 +333,10 @@
           }
           pdf.save('images.pdf');
         } catch (error) {
-          status.textContent = error.message || 'Something went wrong while creating the PDF.';
+          status.textContent = error.message || 'حدث خطأ أثناء إنشاء ملف PDF.';
         } finally {
           convertButton.disabled = files.length === 0;
-          convertButton.innerHTML = 'Convert to PDF <span aria-hidden="true">→</span>';
+          convertButton.innerHTML = 'تحويل إلى PDF <span aria-hidden="true">←</span>';
         }
       });
     })();
