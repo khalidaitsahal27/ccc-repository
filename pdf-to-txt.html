@@ -1,147 +1,42 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#10162f">
-  <meta name="description" content="استخرج النص من ملفات PDF النصية أو الصور الممسوحة ضوئيًا وحمّله كملف TXT.">
-  <title>تحويل PDF إلى TXT وOCR — QuickConvert</title>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#10162f">
+  <meta name="description" content="استخرج النص من PDF أو صور المستندات باستخدام OCR عربي وإنجليزي."><title>استخراج النص من PDF والصور — QuickConvert</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.4/dist/tesseract.min.js"></script>
   <style>
-    :root { color-scheme:light; --ink:#17213d; --muted:#69748c; --primary:#5948e8; --line:#e7e9f2; --surface:#f7f8fc; }
-    * { box-sizing:border-box; }
-    body { margin:0; min-height:100vh; color:var(--ink); background:radial-gradient(ellipse at 50% -10%,#eeebff 0,transparent 55%),#fbfbfe; font-family:"Segoe UI",Tahoma,Arial,sans-serif; }
-    header { display:flex; align-items:center; justify-content:space-between; max-width:1040px; margin:auto; padding:22px 24px; }
-    .brand { display:flex; align-items:center; gap:9px; color:var(--ink); font-size:19px; font-weight:800; text-decoration:none; }
-    .brand-mark { display:grid; place-items:center; width:39px; height:39px; border-radius:12px; color:#fff; background:linear-gradient(145deg,#7666ff,#4e3cdb); font-size:12px; box-shadow:0 6px 16px #5948e840; }
-    .button,button { display:inline-flex; align-items:center; justify-content:center; min-height:43px; padding:10px 16px; border:1px solid #e4e0ff; border-radius:10px; color:var(--primary); background:#f7f5ff; font:inherit; font-weight:700; text-decoration:none; cursor:pointer; transition:.15s; }
-    .button:hover,button:hover { background:#eeebff; transform:translateY(-1px); }
-    main { max-width:940px; margin:auto; padding:34px 24px 60px; }
-    .hero { margin-bottom:24px; }
-    .eyebrow { display:inline-block; padding:7px 12px; border:1px solid #e8e5ff; border-radius:30px; color:var(--primary); background:#f7f5ff; font-size:12px; font-weight:750; }
-    h1 { margin:15px 0 8px; font-size:clamp(30px,5vw,44px); }
-    .intro,.hint { color:var(--muted); line-height:1.85; }
-    .panel { padding:26px; border:1px solid var(--line); border-radius:22px; background:#fff; box-shadow:0 20px 55px #1b234b10; }
-    .upload { display:flex; flex-direction:column; align-items:center; padding:30px 18px; border:2px dashed #c5c8dc; border-radius:17px; background:linear-gradient(145deg,#fbfaff,#f8fbff); text-align:center; }
-    .pdf-icon { display:grid; place-items:center; width:58px; height:58px; margin-bottom:12px; border-radius:17px; color:var(--primary); background:#f0eeff; font-weight:850; }
-    input[type=file] { display:block; max-width:100%; margin-top:15px; }
-    .file-name { margin-top:11px; color:var(--muted); font-size:13px; overflow-wrap:anywhere; }
-    .actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-top:18px; }
-    .actions-group { display:flex; flex-wrap:wrap; gap:9px; }
-    button.primary { color:#fff; border-color:var(--primary); background:linear-gradient(135deg,#6655f0,#4d3bd6); }
-    button.primary:hover { background:#4535ce; }
-    button.ocr { color:#fff; border-color:#14856f; background:linear-gradient(135deg,#24a88b,#14856f); }
-    button.ocr:hover { background:#11715f; }
-    button:disabled { opacity:.5; cursor:not-allowed; transform:none; }
-    #status { min-height:24px; margin-top:12px; color:#69748c; font-size:13px; line-height:1.8; }
-    #status.error { color:#bd3445; }
-    .progress-track { height:7px; overflow:hidden; margin-top:8px; border-radius:10px; background:#ececf4; }
-    #progress-bar { width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,#7666ff,#28c6a4); transition:width .2s; }
-    .result { margin-top:22px; }
-    .result-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
-    h2 { margin:0; font-size:17px; }
-    textarea { display:block; width:100%; min-height:300px; resize:vertical; padding:17px; border:1px solid #dfe2ed; border-radius:14px; color:var(--ink); background:#fff; font:15px/1.9 "Segoe UI",Tahoma,Arial,sans-serif; }
-    textarea:focus,input:focus { outline:3px solid #5948e826; border-color:var(--primary); }
-    .notice { margin-top:18px; padding:14px 16px; border-radius:13px; color:#775317; background:#fff7e8; font-size:13px; line-height:1.85; }
-    footer { padding:22px; color:var(--muted); text-align:center; font-size:13px; }
-    @media(max-width:600px) { header { padding:16px; } main { padding:24px 16px 42px; } .panel { padding:17px; } .actions,.result-head { align-items:stretch; flex-direction:column; } .actions-group { flex-direction:column; } .actions-group button,.result-head .button { width:100%; } }
+    :root{color-scheme:light;--ink:#17213d;--muted:#69748c;--primary:#5948e8;--line:#e7e9f2;--surface:#f7f8fc}*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);background:radial-gradient(ellipse at 50% -10%,#eeebff 0,transparent 55%),#fbfbfe;font-family:"Segoe UI",Tahoma,Arial,sans-serif}header{display:flex;align-items:center;justify-content:space-between;max-width:1040px;margin:auto;padding:22px 24px}.brand{display:flex;align-items:center;gap:9px;color:var(--ink);font-size:19px;font-weight:800;text-decoration:none}.brand-mark{display:grid;place-items:center;width:39px;height:39px;border-radius:12px;color:#fff;background:linear-gradient(145deg,#7666ff,#4e3cdb);font-size:12px}.button,button{display:inline-flex;align-items:center;justify-content:center;min-height:43px;padding:10px 16px;border:1px solid #e4e0ff;border-radius:10px;color:var(--primary);background:#f7f5ff;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:.15s}.button:hover,button:hover{background:#eeebff;transform:translateY(-1px)}main{max-width:940px;margin:auto;padding:34px 24px 60px}.hero{margin-bottom:24px;padding:23px;border:1px solid #e8e5ff;border-radius:19px;background:linear-gradient(135deg,#f8f7ff,#fff 70%)}.eyebrow{display:inline-block;padding:7px 12px;border:1px solid #e8e5ff;border-radius:30px;color:var(--primary);background:#f7f5ff;font-size:12px;font-weight:750}h1{margin:15px 0 8px;font-size:clamp(29px,5vw,43px)}.intro,.hint{color:var(--muted);line-height:1.85}.intro{margin:0}.panel{padding:25px;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 18px 50px #1b234b0d}.upload{display:flex;flex-direction:column;align-items:center;padding:28px 18px;border:2px dashed #c5c8dc;border-radius:16px;background:linear-gradient(145deg,#fbfaff,#f8fbff);text-align:center}.pdf-icon{display:grid;place-items:center;width:56px;height:56px;margin-bottom:12px;border-radius:16px;color:var(--primary);background:#f0eeff;font-weight:850}input[type=file]{display:block;max-width:100%;margin-top:14px}.file-name{margin-top:10px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}.file-list{display:grid;gap:8px;margin-top:12px}.file-item{padding:9px 12px;border:1px solid var(--line);border-radius:9px;direction:ltr;text-align:left;font-size:12px;overflow-wrap:anywhere}.actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:17px}.actions-group{display:flex;flex-wrap:wrap;gap:9px}button.primary{color:white;border-color:var(--primary);background:linear-gradient(135deg,#6655f0,#4d3bd6)}button.ocr{color:#fff;border-color:#14856f;background:linear-gradient(135deg,#24a88b,#14856f)}button:disabled{opacity:.5;cursor:not-allowed;transform:none}#status{min-height:24px;margin-top:12px;color:#69748c;font-size:13px;line-height:1.8}#status.error{color:#bd3445}.progress-track{height:7px;overflow:hidden;margin-top:8px;border-radius:10px;background:#ececf4}#progress-bar{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#7666ff,#28c6a4);transition:width .2s}.result{margin-top:22px}.result-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}h2{margin:0;font-size:17px}textarea{display:block;width:100%;min-height:290px;resize:vertical;padding:16px;border:1px solid #dfe2ed;border-radius:13px;color:var(--ink);background:#fff;font:15px/1.9 "Segoe UI",Tahoma,Arial,sans-serif}textarea:focus,input:focus{outline:3px solid #5948e826;border-color:var(--primary)}.notice{margin-top:17px;padding:14px 16px;border-radius:12px;color:#775317;background:#fff7e8;font-size:13px;line-height:1.85}footer{padding:22px;color:var(--muted);text-align:center;font-size:13px}@media(max-width:600px){header{padding:16px}main{padding:24px 16px 42px}.panel{padding:17px}.actions,.result-head{align-items:stretch;flex-direction:column}.actions-group{flex-direction:column}.actions-group button{width:100%}}
   </style>
 </head>
 <body>
-  <header><a class="brand" href="index.html"><span class="brand-mark">PDF</span><span>QuickConvert</span></a><a class="button" href="tools.html">العودة إلى الأدوات</a></header>
-  <main>
-    <div class="hero"><span class="eyebrow">استخراج النص بسهولة</span><h1>تحويل PDF إلى TXT</h1><p class="intro">استخرج النص من ملفات PDF العادية، أو استخدم OCR للتعرّف على النص في المستندات الممسوحة ضوئيًا. يمكنك مراجعة النص ثم تنزيله كملف TXT.</p></div>
-    <section class="panel" aria-label="أداة استخراج النص من PDF">
-      <div class="upload"><span class="pdf-icon" aria-hidden="true">PDF</span><strong>اختر ملف PDF من جهازك</strong><span class="hint">تُعالج الملفات محليًا داخل المتصفح.</span><input id="pdf-file" type="file" accept="application/pdf,.pdf"><span class="file-name" id="file-name">لم يتم اختيار ملف</span></div>
-      <div class="actions"><span class="hint" id="page-count">اختر ملفًا للبدء</span><div class="actions-group"><button class="primary" id="extract" type="button" disabled>استخراج النص</button><button class="ocr" id="run-ocr" type="button" disabled>تشغيل OCR (عربي + إنجليزي)</button><button id="download" type="button" disabled>تنزيل TXT</button></div></div>
-      <div id="status" role="status" aria-live="polite">الاستخراج العادي أسرع للـ PDF الذي يحتوي نصًا. استخدم OCR إذا كان الملف ممسوحًا ضوئيًا.</div>
-      <div class="progress-track" aria-hidden="true"><div id="progress-bar"></div></div>
-      <div class="result"><div class="result-head"><h2>النص المستخرج</h2><span class="hint" id="char-count">0 حرف</span></div><textarea id="output" dir="auto" placeholder="سيظهر النص المستخرج هنا…" aria-label="النص المستخرج من ملف PDF"></textarea></div>
-      <div class="notice"><strong>حول OCR:</strong> يتعرّف OCR على النص من صور الصفحات، وقد تختلف الدقة بحسب وضوح الصورة وجودة المسح. يتطلب تحميل محرك OCR وبيانات اللغتين العربية والإنجليزية عند تشغيله لأول مرة. لا يتم رفع مستندك إلى خادم.</div>
-    </section>
-  </main>
-  <footer>ملفاتك لا تغادر جهازك. تعتمد قراءة PDF على PDF.js وOCR على Tesseract.js.</footer>
-  <script>
-    (() => {
-      const fileInput=document.getElementById('pdf-file');
-      const fileName=document.getElementById('file-name');
-      const extractButton=document.getElementById('extract');
-      const ocrButton=document.getElementById('run-ocr');
-      const downloadButton=document.getElementById('download');
-      const output=document.getElementById('output');
-      const status=document.getElementById('status');
-      const pageCount=document.getElementById('page-count');
-      const charCount=document.getElementById('char-count');
-      const progressBar=document.getElementById('progress-bar');
-      let selectedFile=null;
-      let activeTask=false;
-
-      if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-      function setBusy(busy){activeTask=busy;extractButton.disabled=busy||!selectedFile;ocrButton.disabled=busy||!selectedFile;downloadButton.disabled=busy||!output.value.trim();}
-      function setProgress(value){progressBar.style.width=`${Math.max(0,Math.min(100,value))}%`;}
-      function updateCount(){charCount.textContent=`${output.value.length.toLocaleString('ar')} حرف`;downloadButton.disabled=activeTask||!output.value.trim();}
-      function clearStatus(){status.className='';status.textContent='';setProgress(0);}
-
-      fileInput.addEventListener('change',()=>{
-        selectedFile=fileInput.files&&fileInput.files[0];output.value='';updateCount();clearStatus();
-        if(!selectedFile){fileName.textContent='لم يتم اختيار ملف';pageCount.textContent='اختر ملفًا للبدء';extractButton.disabled=true;ocrButton.disabled=true;return;}
-        if(!/\.pdf$/i.test(selectedFile.name)&&selectedFile.type!=='application/pdf'){
-          selectedFile=null;fileInput.value='';fileName.textContent='لم يتم اختيار ملف';pageCount.textContent='اختر ملفًا للبدء';extractButton.disabled=true;ocrButton.disabled=true;status.className='error';status.textContent='يرجى اختيار ملف PDF صالح.';return;
-        }
-        if(selectedFile.size>50*1024*1024){selectedFile=null;fileInput.value='';fileName.textContent='لم يتم اختيار ملف';extractButton.disabled=true;ocrButton.disabled=true;status.className='error';status.textContent='حجم الملف أكبر من 50 ميغابايت؛ اختر ملفًا أصغر لتجنب استهلاك ذاكرة المتصفح.';return;}
-        fileName.textContent=selectedFile.name;pageCount.textContent='الملف جاهز للاستخراج';extractButton.disabled=false;ocrButton.disabled=false;
-      });
-
-      extractButton.addEventListener('click',async()=>{
-        if(!selectedFile)return;
-        if(!window.pdfjsLib){status.className='error';status.textContent='تعذر تحميل مكتبة قراءة PDF. تحقق من اتصال الإنترنت وحاول مجددًا.';return;}
-        setBusy(true);extractButton.textContent='جارٍ استخراج النص…';status.className='';status.textContent='تتم قراءة صفحات الملف…';output.value='';setProgress(0);
-        try{
-          const bytes=new Uint8Array(await selectedFile.arrayBuffer());const pdf=await pdfjsLib.getDocument({data:bytes}).promise;const pages=[];
-          for(let number=1;number<=pdf.numPages;number++){
-            pageCount.textContent=`جارٍ قراءة الصفحة ${number} من ${pdf.numPages}…`;const page=await pdf.getPage(number);const content=await page.getTextContent();let line='';const lines=[];
-            for(const item of content.items){if(!item.str)continue;line+=item.str;if(item.hasEOL){lines.push(line);line='';}else line+=' ';}
-            if(line.trim())lines.push(line);pages.push(lines.join('\n').trim());setProgress(number/pdf.numPages*100);
-          }
-          output.value=pages.map((text,index)=>`--- الصفحة ${index+1} ---\n${text}`).join('\n\n');updateCount();pageCount.textContent=`${pdf.numPages.toLocaleString('ar')} صفحة`;
-          if(!output.value.replace(/--- الصفحة \d+ ---/g,'').trim())status.textContent='لم يُعثر على نص. يبدو أن الملف ممسوح ضوئيًا؛ جرّب زر تشغيل OCR.';
-          else status.textContent='اكتمل استخراج النص. راجع ترتيب الأسطر، فقد يختلف حسب طريقة إنشاء PDF.';
-        }catch(error){status.className='error';status.textContent=error&&error.name==='PasswordException'?'هذا الملف محمي بكلمة مرور، ولا يمكن قراءته هنا.':'تعذرت قراءة الملف. تأكد أنه PDF سليم وغير محمي بكلمة مرور.';pageCount.textContent='تعذر استخراج النص';}
-        finally{setBusy(false);extractButton.textContent='استخراج النص';updateCount();}
-      });
-
-      ocrButton.addEventListener('click',async()=>{
-        if(!selectedFile)return;
-        if(!window.pdfjsLib||!window.Tesseract){status.className='error';status.textContent='تعذر تحميل مكتبات OCR. تحقق من اتصال الإنترنت وحاول مجددًا.';return;}
-        setBusy(true);ocrButton.textContent='جارٍ تشغيل OCR…';status.className='';status.textContent='جارٍ تحميل محرك OCR والبيانات اللغوية؛ قد يستغرق ذلك بعض الوقت في أول استخدام.';output.value='';setProgress(0);
-        let worker;
-        try{
-          worker=await Tesseract.createWorker('ara+eng',1,{logger:message=>{
-            if(message.status==='recognizing text'){
-              const pct=message.progress*100;setProgress(pct);status.textContent=`جارٍ التعرف على النص… ${Math.round(pct)}٪`;
-            }else if(message.status==='loading language traineddata')status.textContent='جارٍ تحميل بيانات اللغة العربية والإنجليزية…';
-          }});
-          const pdf=await pdfjsLib.getDocument({data:new Uint8Array(await selectedFile.arrayBuffer())}).promise;const pages=[];
-          for(let number=1;number<=pdf.numPages;number++){
-            pageCount.textContent=`OCR: الصفحة ${number} من ${pdf.numPages}`;status.textContent=`جارٍ تحويل الصفحة ${number} إلى صورة…`;setProgress((number-1)/pdf.numPages*100);
-            const page=await pdf.getPage(number);const viewport=page.getViewport({scale:2});const canvas=document.createElement('canvas');canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
-            const context=canvas.getContext('2d',{willReadFrequently:true});await page.render({canvasContext:context,viewport}).promise;
-            const result=await worker.recognize(canvas);pages.push(result.data.text.trim());canvas.width=0;canvas.height=0;setProgress(number/pdf.numPages*100);
-          }
-          output.value=pages.map((text,index)=>`--- الصفحة ${index+1} ---\n${text}`).join('\n\n');updateCount();pageCount.textContent=`${pdf.numPages.toLocaleString('ar')} صفحة`;
-          status.textContent=output.value.replace(/--- الصفحة \d+ ---/g,'').trim()?'اكتمل OCR. راجع النص، فقد تحتاج بعض الكلمات إلى تصحيح يدوي.':'لم يتعرف OCR على نص واضح. جرّب ملفًا أوضح أو دقة مسح أعلى.';
-        }catch(error){status.className='error';status.textContent='تعذر تشغيل OCR. تحقق من اتصال الإنترنت والذاكرة المتاحة ثم حاول مجددًا.';pageCount.textContent='تعذر إكمال OCR';}
-        finally{if(worker){try{await worker.terminate();}catch(_){}}setBusy(false);ocrButton.textContent='تشغيل OCR (عربي + إنجليزي)';updateCount();}
-      });
-
-      output.addEventListener('input',updateCount);
-      downloadButton.addEventListener('click',()=>{
-        if(!output.value.trim())return;
-        const blob=new Blob(['\uFEFF',output.value],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;
-        link.download=`${selectedFile?selectedFile.name.replace(/\.pdf$/i,''):'extracted-text'}.txt`;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-      });
-    })();
-  </script>
+<header><a class="brand" href="index.html"><span class="brand-mark">PDF</span><span>QuickConvert</span></a><a class="button" href="tools.html">العودة إلى الأدوات</a></header>
+<main>
+  <div class="hero"><span class="eyebrow">استخراج النص وOCR</span><h1>تحويل PDF أو صورة إلى TXT</h1><p class="intro">اختر ملف PDF أو صورة ممسوحة ضوئيًا (JPG أو PNG أو WebP). استخرج النص المضمّن من PDF، أو شغّل OCR للتعرف على العربية والإنجليزية. يمكنك مراجعة النص وتنزيله كملف TXT.</p></div>
+  <section class="panel" aria-label="أداة استخراج النص">
+    <div class="upload"><span class="pdf-icon" aria-hidden="true">PDF · OCR</span><strong>اختر ملف PDF أو صور المستندات</strong><span class="hint">الصور وملفات PDF تُعالج محليًا في متصفحك.</span><input id="files" type="file" accept="application/pdf,.pdf,image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" multiple><span class="file-name" id="file-name">لم يتم اختيار ملفات</span></div>
+    <div class="file-list" id="file-list" aria-live="polite"></div>
+    <div class="actions"><span class="hint" id="page-count">اختر ملفًا للبدء</span><div class="actions-group"><button class="primary" id="extract" type="button" disabled>استخراج نص PDF</button><button class="ocr" id="run-ocr" type="button" disabled>تشغيل OCR (عربي + إنجليزي)</button><button id="download" type="button" disabled>تنزيل TXT</button></div></div>
+    <div id="status" role="status" aria-live="polite">الاستخراج العادي لملفات PDF النصية أسرع. استخدم OCR للصفحات المصورة أو الصور المنفردة.</div><div class="progress-track" aria-hidden="true"><div id="progress-bar"></div></div>
+    <div class="result"><div class="result-head"><h2>النص المستخرج</h2><span class="hint" id="char-count">0 حرف</span></div><textarea id="output" dir="auto" placeholder="سيظهر النص المستخرج هنا…" aria-label="النص المستخرج"></textarea></div>
+    <div class="notice"><strong>ملاحظات OCR:</strong> يلزم اتصال بالإنترنت أول مرة لتحميل محرك OCR وبيانات العربية والإنجليزية، ثم تتم المعالجة على جهازك. الدقة تعتمد على جودة المسح. لا يمكن ضمان استخراج مثالي للنص أو ترتيب القراءة، خصوصًا في الصفحات متعددة الأعمدة. الملفات الأكبر من 50 ميغابايت غير مدعومة.</div>
+  </section>
+</main><footer>ملفاتك لا تُرفع إلى خادم. تعتمد القراءة على PDF.js والتعرّف الضوئي على Tesseract.js.</footer>
+<script>
+(()=>{
+  const input=document.getElementById('files'),fileLabel=document.getElementById('file-name'),fileList=document.getElementById('file-list'),extractButton=document.getElementById('extract'),ocrButton=document.getElementById('run-ocr'),downloadButton=document.getElementById('download'),output=document.getElementById('output'),status=document.getElementById('status'),pageCount=document.getElementById('page-count'),charCount=document.getElementById('char-count'),progress=document.getElementById('progress-bar');let files=[],busy=false;
+  if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const isPdf=f=>f.type==='application/pdf'||/\.pdf$/i.test(f.name);const isImage=f=>/^image\/(jpeg|png|webp)$/i.test(f.type)||/\.(jpe?g|png|webp)$/i.test(f.name);
+  function updateButtons(){extractButton.disabled=busy||!files.some(isPdf);ocrButton.disabled=busy||!files.length;downloadButton.disabled=busy||!output.value.trim();}
+  function updateCount(){charCount.textContent=`${output.value.length.toLocaleString('ar')} حرف`;updateButtons();}
+  function updateFiles(){fileList.replaceChildren();files.forEach(f=>{const row=document.createElement('div');row.className='file-item';row.textContent=`${f.name} — ${(f.size/1024/1024).toFixed(2)} MB`;fileList.append(row);});fileLabel.textContent=files.length?`${files.length} ملف محدد`:'لم يتم اختيار ملفات';pageCount.textContent=files.length?'الملفات جاهزة للمعالجة':'اختر ملفًا للبدء';updateButtons();}
+  function setBusy(value){busy=value;updateButtons();}function setProgress(value){progress.style.width=`${Math.max(0,Math.min(100,value))}%`;}
+  input.addEventListener('change',()=>{const chosen=Array.from(input.files||[]);const valid=chosen.filter(f=>isPdf(f)||isImage(f));const tooLarge=valid.filter(f=>f.size>50*1024*1024);files=valid.filter(f=>f.size<=50*1024*1024);input.value='';output.value='';status.className='';status.textContent=chosen.length!==valid.length?'تم تجاهل أنواع ملفات غير مدعومة. ':'';if(tooLarge.length)status.textContent+='تم تجاهل الملفات الأكبر من 50 ميغابايت.';updateFiles();updateCount();});
+  async function loadPdf(file){if(!window.pdfjsLib)throw Error('تعذر تحميل مكتبة قراءة PDF. تحقق من اتصال الإنترنت.');const doc=await pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;return doc;}
+  extractButton.addEventListener('click',async()=>{const pdfFiles=files.filter(isPdf);if(!pdfFiles.length)return;setBusy(true);output.value='';status.className='';setProgress(0);const results=[];try{for(const file of pdfFiles){const doc=await loadPdf(file);for(let n=1;n<=doc.numPages;n++){pageCount.textContent=`${file.name} — الصفحة ${n} من ${doc.numPages}`;const page=await doc.getPage(n);const content=await page.getTextContent();let line='';const lines=[];for(const item of content.items){if(!item.str)continue;line+=item.str;if(item.hasEOL){lines.push(line);line='';}else line+=' ';}if(line.trim())lines.push(line);results.push(`--- ${file.name} | الصفحة ${n} ---\n${lines.join('\n').trim()}`);setProgress(results.length/(pdfFiles.reduce((sum,f)=>sum+1,0))*100);}}output.value=results.join('\n\n');updateCount();status.textContent=output.value.replace(/---[^\n]+---/g,'').trim()?'اكتمل استخراج النص من PDF. إذا كانت الصفحات صورًا، استخدم OCR.':'لم يوجد نص مضمّن. شغّل OCR للصفحات الممسوحة ضوئيًا.';}catch(error){status.className='error';status.textContent=error&&error.name==='PasswordException'?'أحد ملفات PDF محمي بكلمة مرور.':'تعذرت قراءة ملف PDF؛ تأكد من سلامته وعدم حمايته بكلمة مرور.';}finally{setBusy(false);updateCount();}});
+  ocrButton.addEventListener('click',async()=>{if(!window.Tesseract||!window.pdfjsLib){status.className='error';status.textContent='تعذر تحميل مكتبات OCR. تحقق من اتصال الإنترنت.';return;}setBusy(true);output.value='';status.className='';status.textContent='جارٍ إعداد OCR وتحميل بيانات اللغتين؛ قد يستغرق ذلك وقتًا في أول استخدام.';setProgress(0);let worker;const results=[];try{worker=await Tesseract.createWorker('ara+eng',1,{logger:m=>{if(m.status==='recognizing text'){status.textContent=`جارٍ التعرّف على النص… ${Math.round(m.progress*100)}٪`;}}});const total=files.reduce((sum,f)=>sum+(isPdf(f)?1:1),0);let completed=0;for(const file of files){if(isPdf(file)){const doc=await loadPdf(file);for(let n=1;n<=doc.numPages;n++){pageCount.textContent=`OCR: ${file.name} — الصفحة ${n} من ${doc.numPages}`;const page=await doc.getPage(n);const viewport=page.getViewport({scale:2});const canvas=document.createElement('canvas');canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);const ctx=canvas.getContext('2d',{willReadFrequently:true});await page.render({canvasContext:ctx,viewport}).promise;const recognized=await worker.recognize(canvas);results.push(`--- ${file.name} | الصفحة ${n} ---\n${recognized.data.text.trim()}`);canvas.width=0;canvas.height=0;completed++;setProgress(completed/(total+doc.numPages-1)*100);}}else if(isImage(file)){pageCount.textContent=`OCR: ${file.name}`;const recognized=await worker.recognize(file);results.push(`--- ${file.name} ---\n${recognized.data.text.trim()}`);completed++;setProgress(completed/total*100);}}output.value=results.join('\n\n');updateCount();status.textContent=output.value.replace(/---[^\n]+---/g,'').trim()?'اكتمل OCR. راجع النص وصحح ما قد يكون غير دقيق.':'لم يتمكن OCR من قراءة نص واضح؛ جرّب صورة أعلى وضوحًا.';}catch(error){status.className='error';status.textContent='تعذر تشغيل OCR. تحقق من اتصال الإنترنت والذاكرة المتاحة، ثم حاول مجددًا.';}finally{if(worker){try{await worker.terminate();}catch(_){}}setBusy(false);updateCount();}});
+  output.addEventListener('input',updateCount);downloadButton.addEventListener('click',()=>{if(!output.value.trim())return;const blob=new Blob(['\uFEFF',output.value],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`${files.length===1?files[0].name.replace(/\.[^.]+$/,''):'extracted-text'}.txt`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+})();
+</script>
 </body>
 </html>

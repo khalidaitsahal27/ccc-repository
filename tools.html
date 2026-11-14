@@ -1,57 +1,20 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#10162f">
-  <meta name="description" content="اكتشف أدوات QuickConvert لتحويل الصور والنصوص واستكشاف صفحات المشروع.">
-  <title>الأدوات — QuickConvert</title>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#10162f">
+  <meta name="description" content="اكتشف أدوات QuickConvert لتحويل الصور والنصوص واستخراج النص من PDF."><title>الأدوات — QuickConvert</title>
   <style>
-    :root { color-scheme:light; --ink:#17213d; --muted:#69748c; --primary:#5948e8; --line:#e7e9f2; }
-    * { box-sizing:border-box; }
-    body { margin:0; min-height:100vh; color:var(--ink); background:radial-gradient(ellipse at 50% -10%,#eeebff 0,transparent 55%),#fbfbfe; font-family:"Segoe UI",Tahoma,Arial,sans-serif; }
-    header { display:flex; align-items:center; justify-content:space-between; max-width:1080px; margin:auto; padding:22px 24px; }
-    .brand { display:flex; align-items:center; gap:9px; color:var(--ink); font-size:19px; font-weight:800; text-decoration:none; }
-    .brand-mark { display:grid; place-items:center; width:39px; height:39px; border-radius:12px; color:#fff; background:linear-gradient(145deg,#7666ff,#4e3cdb); font-size:12px; }
-    .button { display:inline-flex; align-items:center; justify-content:center; padding:10px 15px; border:1px solid #e4e0ff; border-radius:9px; color:var(--primary); background:#f7f5ff; font:inherit; font-weight:700; text-decoration:none; transition:.15s; }
-    .button:hover { background:#eeebff; transform:translateY(-1px); }
-    main { max-width:1040px; margin:auto; padding:36px 24px 64px; }
-    .hero { padding:30px; border:1px solid #e8e5ff; border-radius:22px; background:linear-gradient(135deg,#f8f7ff,#fff 70%); box-shadow:0 14px 40px #1b234b0a; }
-    .eyebrow { display:inline-block; padding:7px 12px; border:1px solid #e8e5ff; border-radius:30px; color:var(--primary); background:#f7f5ff; font-size:12px; font-weight:750; }
-    h1 { margin:15px 0 8px; font-size:clamp(32px,5vw,48px); }
-    .intro { max-width:700px; margin:0; color:var(--muted); line-height:1.9; }
-    h2 { margin:32px 0 14px; font-size:22px; }
-    .tools { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-top:24px; }
-    .tool { display:flex; flex-direction:column; min-height:235px; padding:21px; border:1px solid var(--line); border-radius:18px; background:#fff; box-shadow:0 10px 28px #1b234b08; transition:transform .18s,border-color .18s,box-shadow .18s; }
-    .tool:hover { transform:translateY(-3px); border-color:#c8c1ff; box-shadow:0 16px 34px #5948e814; }
-    .tool-top { display:flex; align-items:center; gap:13px; }
-    .icon { display:grid; place-items:center; flex:0 0 50px; width:50px; height:50px; border-radius:15px; color:var(--primary); background:#f0eeff; font-size:14px; font-weight:850; }
-    .icon.green { color:#14856f; background:#e7faf5; }
-    .icon.amber { color:#b87316; background:#fff5e7; }
-    .icon.blue { color:#2563eb; background:#eaf1ff; }
-    .tool h3 { margin:0; font-size:18px; }
-    .badge { display:inline-flex; width:max-content; margin-top:15px; padding:5px 10px; border-radius:20px; color:#27836e; background:#e7faf5; font-size:11px; font-weight:750; }
-    .tool p { flex:1; margin:12px 0 18px; color:var(--muted); font-size:14px; line-height:1.8; }
-    .tool .button { color:#fff; border-color:var(--primary); background:linear-gradient(135deg,#6655f0,#4d3bd6); }
-    .tool .button:hover { background:#4535ce; }
-    .footer-links { display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
-    footer { padding:24px; color:var(--muted); text-align:center; font-size:13px; }
-    @media(max-width:600px) { header { padding:16px; } main { padding:24px 16px 44px; } .hero { padding:22px; } .tools { grid-template-columns:1fr; } }
+    :root{color-scheme:light;--ink:#17213d;--muted:#69748c;--primary:#5948e8;--line:#e7e9f2}*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);background:radial-gradient(ellipse at 50% -10%,#eeebff 0,transparent 55%),#fbfbfe;font-family:"Segoe UI",Tahoma,Arial,sans-serif}header{display:flex;align-items:center;justify-content:space-between;max-width:1080px;margin:auto;padding:22px 24px}.brand{display:flex;align-items:center;gap:9px;color:var(--ink);font-size:19px;font-weight:800;text-decoration:none}.brand-mark{display:grid;place-items:center;width:39px;height:39px;border-radius:12px;color:#fff;background:linear-gradient(145deg,#7666ff,#4e3cdb);font-size:12px}.button{display:inline-flex;align-items:center;justify-content:center;padding:10px 15px;border:1px solid #e4e0ff;border-radius:9px;color:var(--primary);background:#f7f5ff;font:inherit;font-weight:700;text-decoration:none;transition:.15s}.button:hover{background:#eeebff;transform:translateY(-1px)}main{max-width:1040px;margin:auto;padding:36px 24px 64px}.hero{padding:30px;border:1px solid #e8e5ff;border-radius:22px;background:linear-gradient(135deg,#f8f7ff,#fff 70%);box-shadow:0 14px 40px #1b234b0a}.eyebrow{display:inline-block;padding:7px 12px;border:1px solid #e8e5ff;border-radius:30px;color:var(--primary);background:#f7f5ff;font-size:12px;font-weight:750}h1{margin:15px 0 8px;font-size:clamp(32px,5vw,48px)}.intro{max-width:720px;margin:0;color:var(--muted);line-height:1.9}h2{margin:32px 0 14px;font-size:22px}.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:24px}.tool{display:flex;flex-direction:column;min-height:230px;padding:21px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 10px 28px #1b234b08;transition:.18s}.tool:hover{transform:translateY(-3px);border-color:#c8c1ff;box-shadow:0 16px 34px #5948e814}.tool-top{display:flex;align-items:center;gap:13px}.icon{display:grid;place-items:center;flex:0 0 50px;height:50px;border-radius:15px;color:var(--primary);background:#f0eeff;font-size:14px;font-weight:850}.green{color:#14856f;background:#e7faf5}.blue{color:#2563eb;background:#eaf1ff}.amber{color:#b87316;background:#fff5e7}.tool h3{margin:0;font-size:18px}.badge{display:inline-flex;width:max-content;margin-top:15px;padding:5px 10px;border-radius:20px;color:#27836e;background:#e7faf5;font-size:11px;font-weight:750}.tool p{flex:1;margin:12px 0 18px;color:var(--muted);font-size:14px;line-height:1.8}.tool .button{color:#fff;border-color:var(--primary);background:linear-gradient(135deg,#6655f0,#4d3bd6)}.footer-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}footer{padding:24px;color:var(--muted);text-align:center;font-size:13px}@media(max-width:600px){header{padding:16px}main{padding:24px 16px 44px}.hero{padding:22px}.tools{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <header><a class="brand" href="index.html"><span class="brand-mark">QC</span><span>QuickConvert</span></a><a class="button" href="index.html">العودة للرئيسية</a></header>
-  <main>
-    <section class="hero"><span class="eyebrow">مركز الأدوات</span><h1>اختر الأداة المناسبة</h1><p class="intro">أدوات بسيطة لتحويل الملفات، تعمل في متصفحك. اختر «فتح الأداة» للانتقال مباشرةً إلى صفحة الاستخدام.</p></section>
-    <h2>أدوات QuickConvert</h2>
-    <div class="tools">
-      <article class="tool"><div class="tool-top"><span class="icon" aria-hidden="true">JPG</span><h3>تحويل الصور إلى PDF</h3></div><span class="badge">JPG · PNG · صور متعددة</span><p>اجمع عدة صور في ملف PDF واحد، ورتّبها قبل التحويل. تتم معالجة الملفات في متصفحك.</p><a class="button" href="index.html#image-converter">فتح الأداة</a></article>
-      <article class="tool"><div class="tool-top"><span class="icon green" aria-hidden="true">TXT</span><h3>تحويل TXT إلى PDF</h3></div><span class="badge">يدعم العربية</span><p>اكتب نصًا أو اختر ملف TXT، واضبط حجم الخط ومحاذاة النص وتباعد الأسطر قبل الحفظ.</p><a class="button" href="text-to-pdf.html">فتح الأداة</a></article>
-      <article class="tool"><div class="tool-top"><span class="icon blue" aria-hidden="true">PDF</span><h3>تحويل PDF إلى TXT</h3></div><span class="badge">استخراج نص + OCR عربي وإنجليزي</span><p>استخرج النص من PDF أو شغّل OCR للتعرف على النص في الصفحات الممسوحة ضوئيًا.</p><a class="button" href="pdf-to-txt.html">فتح الأداة</a></article>
-      <article class="tool"><div class="tool-top"><span class="icon amber" aria-hidden="true">◉</span><h3>مقارنة النقاط</h3></div><span class="badge">تجربة تفاعلية</span><p>استكشف مقارنة مرئية بين مجموعات مختلفة من النقاط وتعرّف على مواقعها داخل الشبكة.</p><a class="button" href="comparison.html">فتح الصفحة</a></article>
-    </div>
-    <div class="footer-links"><a class="button" href="all-pages.html">مكتبة جميع الصفحات</a><a class="button" href="index.html">العودة إلى الرئيسية</a></div>
-  </main>
-  <footer>QuickConvert — أدوات المشروع.</footer>
+<header><a class="brand" href="index.html"><span class="brand-mark">QC</span><span>QuickConvert</span></a><a class="button" href="index.html">العودة للرئيسية</a></header>
+<main><section class="hero"><span class="eyebrow">مركز الأدوات</span><h1>أدوات التحويل</h1><p class="intro">اختر أداة لتحويل الصور والنصوص أو استخراج النص من المستندات. المعالجة محلية في متصفحك، ويدعم OCR ملفات PDF المصورة والصور المنفردة بالعربية والإنجليزية.</p></section>
+<h2>أدوات QuickConvert</h2><div class="tools">
+<article class="tool"><div class="tool-top"><span class="icon">JPG</span><h3>تحويل الصور إلى PDF</h3></div><span class="badge">JPG · PNG · صور متعددة</span><p>اجمع عدة صور في ملف PDF واحد، ورتّبها قبل التحويل.</p><a class="button" href="index.html#image-converter">فتح الأداة</a></article>
+<article class="tool"><div class="tool-top"><span class="icon green">TXT</span><h3>تحويل TXT إلى PDF</h3></div><span class="badge">تنسيق عربي</span><p>اكتب نصًا أو اختر ملف TXT واضبط حجم الخط والمحاذاة وتباعد الأسطر.</p><a class="button" href="text-to-pdf.html">فتح الأداة</a></article>
+<article class="tool"><div class="tool-top"><span class="icon blue">PDF</span><h3>تحويل PDF أو صورة إلى TXT</h3></div><span class="badge">OCR عربي وإنجليزي</span><p>استخرج النص من PDF النصي أو شغّل OCR على صفحات ممسوحة وصور JPG وPNG وWebP.</p><a class="button" href="pdf-to-txt.html">فتح الأداة</a></article>
+<article class="tool"><div class="tool-top"><span class="icon amber">◉</span><h3>مقارنة النقاط</h3></div><span class="badge">تجربة تفاعلية</span><p>استكشف مقارنة مرئية بين مجموعات النقاط وتعرّف على مواضعها في الشبكة.</p><a class="button" href="comparison.html">فتح الصفحة</a></article>
+</div><div class="footer-links"><a class="button" href="all-pages.html">مكتبة جميع الصفحات</a><a class="button" href="index.html">العودة إلى الرئيسية</a></div></main><footer>QuickConvert — أدوات المشروع.</footer>
 </body>
 </html>

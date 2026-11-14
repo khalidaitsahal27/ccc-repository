@@ -4,114 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#10162f">
-  <meta name="description" content="حوّل الصور والنصوص واستخرج النص من PDF باستخدام QuickConvert.">
-  <title>QuickConvert — تحويل الملفات إلى PDF</title>
+  <meta name="description" content="أدوات مجانية لتحويل الصور والنصوص واستخراج النص من PDF باستخدام QuickConvert.">
+  <title>QuickConvert — أدوات تحويل الملفات</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    :root { color-scheme:light; --ink:#17213d; --muted:#69748c; --primary:#5948e8; --line:#e7e9f2; --surface:#f7f8fc; }
-    * { box-sizing:border-box; }
-    body { margin:0; color:var(--ink); background:linear-gradient(180deg,#f8f7ff 0,#fff 330px); font-family:"Segoe UI",Tahoma,Arial,sans-serif; }
-    header { display:flex; align-items:center; justify-content:space-between; max-width:1080px; margin:auto; padding:22px 24px; }
-    .brand { display:flex; align-items:center; gap:9px; font-size:19px; font-weight:800; }
-    .brand-mark { display:inline-grid; place-items:center; width:39px; height:39px; border-radius:12px; color:#fff; background:linear-gradient(145deg,#7666ff,#4e3cdb); font-size:12px; box-shadow:0 6px 16px #5948e840; }
-    main { max-width:960px; margin:auto; padding:32px 24px 64px; }
-    .hero { padding:18px 0 8px; }
-    .eyebrow { display:inline-block; padding:7px 12px; border:1px solid #e8e5ff; border-radius:30px; color:var(--primary); background:#f7f5ff; font-size:12px; font-weight:750; }
-    h1 { margin:15px 0 10px; font-size:clamp(30px,5vw,46px); letter-spacing:-1px; }
-    h2 { margin:0 0 8px; font-size:23px; }
-    .intro,.muted { color:var(--muted); line-height:1.8; }
-    .intro { max-width:680px; margin:0; }
-    section { margin-top:25px; padding:25px; border:1px solid var(--line); border-radius:18px; background:#fff; box-shadow:0 12px 35px #1b234b0a; }
-    .section-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; }
-    .dropzone { padding:25px 16px; border:2px dashed #cfd3e3; border-radius:14px; background:var(--surface); text-align:center; }
-    button,.button { display:inline-flex; align-items:center; justify-content:center; padding:11px 18px; border:0; border-radius:9px; color:#fff; background:var(--primary); font:inherit; font-weight:700; text-decoration:none; cursor:pointer; transition:transform .15s,background .15s; }
-    button:hover,.button:hover { background:#4535ce; transform:translateY(-1px); }
-    button:disabled { opacity:.5; cursor:not-allowed; transform:none; }
-    .button.secondary { color:var(--primary); border:1px solid #e4e0ff; background:#f7f5ff; white-space:nowrap; }
-    .button.secondary:hover { background:#eeebff; }
-    input[type=file] { display:block; max-width:100%; margin:15px auto; }
-    .file-list { display:grid; gap:8px; margin-top:14px; }
-    .file-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border:1px solid var(--line); border-radius:12px; background:#fff; }
-    .file-row button { padding:5px 10px; background:#68738a; }
-    .actions { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; }
-    #status { min-height:22px; margin-top:10px; color:#bd3445; }
-    .tool-links { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin-top:20px; }
-    .tool-card { display:flex; flex-direction:column; gap:15px; padding:17px; border:1px solid var(--line); border-radius:14px; color:var(--ink); background:linear-gradient(145deg,#fff,#fbfaff); text-decoration:none; transition:.15s; }
-    .tool-card:hover { border-color:#c8c1ff; transform:translateY(-2px); box-shadow:0 12px 28px #5948e812; }
-    .tool-card-top { display:flex; align-items:center; gap:13px; }
-    .tool-icon { display:grid; place-items:center; flex:0 0 46px; height:46px; border-radius:14px; color:var(--primary); background:#f0eeff; font-size:14px; font-weight:850; }
-    .tool-icon.blue { color:#2563eb; background:#eaf1ff; }
-    .tool-card strong,.tool-card small { display:block; }
-    .tool-card small { margin-top:4px; color:var(--muted); line-height:1.6; }
-    .tool-card .button { width:100%; min-height:40px; padding:9px 14px; }
-    .tool-badge { margin-right:auto; padding:5px 9px; border-radius:20px; color:#27836e; background:#e7faf5; font-size:10px; font-weight:750; white-space:nowrap; }
-    .page-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin-top:18px; }
-    .page-card { min-width:0; display:flex; flex-direction:column; gap:14px; padding:16px; border:1px solid var(--line); border-radius:12px; background:linear-gradient(145deg,#fff,#fbfaff); transition:.15s; }
-    .page-card:hover { border-color:#c8c1ff; transform:translateY(-2px); box-shadow:0 10px 24px #5948e812; }
-    .page-card-top { display:flex; align-items:center; gap:11px; }
-    .page-icon { display:grid; place-items:center; flex:0 0 40px; width:40px; height:40px; border-radius:12px; color:var(--primary); background:#f0eeff; font-size:14px; font-weight:800; }
-    .page-title { min-width:0; font-weight:800; overflow-wrap:anywhere; }
-    .page-path { display:block; margin-top:3px; direction:ltr; color:var(--muted); font-size:11px; overflow-wrap:anywhere; }
-    .page-card .button { width:100%; padding:9px 14px; }
-    .empty { grid-column:1/-1; padding:15px; border:1px dashed var(--line); border-radius:12px; color:var(--muted); text-align:center; }
-    footer { padding:22px; color:var(--muted); text-align:center; font-size:13px; }
-    @media(max-width:600px) { header { padding:16px; } main { padding:22px 16px 42px; } section { padding:17px; } .section-heading { flex-direction:column; } .actions { align-items:stretch; flex-direction:column; } .actions button { width:100%; } .page-list,.tool-links { grid-template-columns:1fr; } }
+    :root{color-scheme:light;--ink:#17213d;--muted:#69748c;--primary:#5948e8;--line:#e7e9f2;--surface:#f7f8fc}
+    *{box-sizing:border-box}body{margin:0;color:var(--ink);background:linear-gradient(180deg,#f8f7ff 0,#fff 360px);font-family:"Segoe UI",Tahoma,Arial,sans-serif}header{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:auto;padding:20px 24px}.brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:800;text-decoration:none;color:var(--ink)}.brand-mark{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;color:white;background:linear-gradient(145deg,#7666ff,#4e3cdb);font-size:12px;box-shadow:0 6px 16px #5948e840}.nav{display:flex;gap:9px}.button,button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 15px;border:1px solid #e4e0ff;border-radius:10px;color:var(--primary);background:#f7f5ff;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:.16s}.button:hover,button:hover{background:#eeebff;transform:translateY(-1px)}main{max-width:1000px;margin:auto;padding:34px 24px 60px}.hero{padding:30px;border:1px solid #e8e5ff;border-radius:22px;background:linear-gradient(135deg,#f8f7ff,#fff 72%);box-shadow:0 14px 40px #1b234b0a}.eyebrow{display:inline-block;padding:7px 12px;border:1px solid #e8e5ff;border-radius:30px;color:var(--primary);background:#f7f5ff;font-size:12px;font-weight:750}h1{margin:15px 0 8px;font-size:clamp(31px,5vw,46px)}h2{margin:0 0 8px;font-size:22px}.intro,.muted{color:var(--muted);line-height:1.85}.intro{max-width:730px;margin:0}.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:13px;margin-top:22px}.tool{display:flex;flex-direction:column;gap:14px;padding:17px;border:1px solid var(--line);border-radius:15px;background:#fff;box-shadow:0 8px 24px #1b234b08;transition:.16s}.tool:hover{transform:translateY(-2px);border-color:#c8c1ff;box-shadow:0 12px 28px #5948e812}.tool-head{display:flex;align-items:center;gap:11px}.icon{display:grid;place-items:center;flex:0 0 43px;height:43px;border-radius:13px;color:var(--primary);background:#f0eeff;font-size:13px;font-weight:850}.icon.blue{color:#2563eb;background:#eaf1ff}.icon.green{color:#14856f;background:#e7faf5}.tool strong,.tool small{display:block}.tool small{margin-top:4px;color:var(--muted);line-height:1.6}.badge{align-self:flex-start;padding:5px 9px;border-radius:20px;color:#27836e;background:#e7faf5;font-size:10px;font-weight:750}.tool .button{width:100%;margin-top:auto;color:#fff;border:0;background:linear-gradient(135deg,#6655f0,#4d3bd6)}section.panel{margin-top:24px;padding:24px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 12px 35px #1b234b0a}.upload{padding:22px;border:2px dashed #cfd3e3;border-radius:14px;background:var(--surface);text-align:center}.upload input{display:block;margin:13px auto 0;max-width:100%}.file-list{display:grid;gap:8px;margin-top:14px}.file-row,.page-card{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border:1px solid var(--line);border-radius:11px}.file-row button{min-height:34px;padding:5px 10px}.actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:15px}.primary{color:#fff;background:var(--primary)}button:disabled{opacity:.5;cursor:not-allowed;transform:none}#status{min-height:22px;margin-top:10px;color:#bd3445;font-size:13px}.section-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.page-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px}.page-card{min-width:0;flex-direction:column;align-items:stretch;padding:15px;transition:.15s}.page-card:hover{border-color:#c8c1ff;transform:translateY(-2px)}.page-card-head{display:flex;align-items:center;gap:10px}.page-title{font-weight:800}.page-path{margin-top:4px;direction:ltr;color:var(--muted);font-size:11px;overflow-wrap:anywhere}.page-card .button{width:100%;color:#fff;background:var(--primary)}.empty{grid-column:1/-1;padding:16px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center}footer{padding:22px;color:var(--muted);text-align:center;font-size:13px}@media(max-width:620px){header{padding:16px;align-items:flex-start}.nav{flex-direction:column}.nav .button{padding:7px 10px;font-size:12px}main{padding:22px 16px 42px}.hero,section.panel{padding:18px}.section-top,.actions{align-items:stretch;flex-direction:column}.tools,.page-list{grid-template-columns:1fr}.actions button{width:100%}}
   </style>
 </head>
 <body>
-  <header><div class="brand"><span class="brand-mark">PDF</span><span>QuickConvert</span></div><span class="muted">أدوات وصفحات المشروع</span></header>
+  <header><a class="brand" href="index.html"><span class="brand-mark">QC</span><span>QuickConvert</span></a><nav class="nav" aria-label="التنقل"><a class="button" href="tools.html">الأدوات</a><a class="button" href="all-pages.html">مكتبة الصفحات</a></nav></header>
   <main>
-    <div class="hero">
-      <span class="eyebrow">أدوات مجانية وسهلة</span>
-      <h1>مرحبًا بك في QuickConvert</h1>
-      <p class="intro">حوّل صورك أو ملفاتك النصية إلى PDF، واستخرج النص من ملفات PDF، واستكشف أدوات المشروع من مكان واحد.</p>
-      <div class="tool-links" aria-label="الأدوات">
-        <article class="tool-card"><div class="tool-card-top"><span class="tool-icon" aria-hidden="true">JPG</span><span><strong>تحويل الصور إلى PDF</strong><small>اجمع صور JPG وPNG في ملف PDF واحد.</small></span><span class="tool-badge">سريع ومجاني</span></div><a class="button" href="#image-converter">فتح الأداة</a></article>
-        <article class="tool-card"><div class="tool-card-top"><span class="tool-icon" aria-hidden="true">TXT</span><span><strong>تحويل TXT إلى PDF</strong><small>اكتب نصًا أو اختر ملفًا واضبط تنسيق العربية.</small></span><span class="tool-badge">يدعم العربية</span></div><a class="button" href="text-to-pdf.html">فتح الأداة</a></article>
-        <article class="tool-card"><div class="tool-card-top"><span class="tool-icon blue" aria-hidden="true">PDF</span><span><strong>تحويل PDF إلى TXT</strong><small>استخرج النص أو شغّل OCR للملفات الممسوحة ضوئيًا.</small></span><span class="tool-badge">يدعم OCR</span></div><a class="button" href="pdf-to-txt.html">فتح الأداة</a></article>
-        <article class="tool-card"><div class="tool-card-top"><span class="tool-icon" aria-hidden="true">☷</span><span><strong>مكتبة الصفحات</strong><small>تصفّح كل صفحات HTML في المشروع.</small></span><span class="tool-badge">محدّثة تلقائيًا</span></div><a class="button" href="all-pages.html">فتح المكتبة</a></article>
+    <section class="hero"><span class="eyebrow">أدوات مجانية — ملفاتك تبقى على جهازك</span><h1>حوّل ملفاتك بسهولة</h1><p class="intro">اختر الأداة المناسبة لتحويل الصور أو النصوص إلى PDF، أو استخراج النص من ملفات PDF بما فيها المستندات المصوّرة باستخدام OCR.</p>
+      <div class="tools" aria-label="أدوات التحويل">
+        <article class="tool"><div class="tool-head"><span class="icon">JPG</span><span><strong>صور إلى PDF</strong><small>اجمع صور JPG وPNG في ملف واحد.</small></span></div><span class="badge">سريع ومجاني</span><a class="button" href="#image-converter">فتح الأداة</a></article>
+        <article class="tool"><div class="tool-head"><span class="icon green">TXT</span><span><strong>TXT إلى PDF</strong><small>تنسيق للنص العربي قبل الطباعة.</small></span></div><span class="badge">يدعم العربية</span><a class="button" href="text-to-pdf.html">فتح الأداة</a></article>
+        <article class="tool"><div class="tool-head"><span class="icon blue">PDF</span><span><strong>PDF إلى TXT</strong><small>استخراج نص وOCR للصور والملفات الممسوحة.</small></span></div><span class="badge">OCR عربي وإنجليزي</span><a class="button" href="pdf-to-txt.html">فتح الأداة</a></article>
       </div>
-      <p><a class="button secondary" href="tools.html">استكشف صفحة الأدوات ←</a></p>
-    </div>
-    <section id="image-converter" aria-labelledby="converter-title">
-      <h2 id="converter-title">تحويل الصور إلى PDF</h2><p class="muted">اختر صور JPG أو PNG، ثم أنشئ ملف PDF مباشرةً في متصفحك.</p>
-      <div class="dropzone"><label for="image-files">اختر صورة واحدة أو عدة صور:</label><input id="image-files" type="file" accept="image/jpeg,image/png,.jpg,.jpeg,.png" multiple></div>
-      <div id="file-list" class="file-list" aria-live="polite"></div>
-      <div class="actions"><span id="count" class="muted">لم يتم اختيار صور</span><button id="convert" type="button" disabled>تحويل إلى PDF</button></div><div id="status" role="status" aria-live="polite"></div>
     </section>
-    <section aria-labelledby="pages-title"><div class="section-heading"><div><h2 id="pages-title">صفحات المشروع</h2><p class="muted">افتح صفحة مباشرةً، أو انتقل إلى المكتبة لعرض جميع الصفحات.</p></div><a class="button secondary" href="all-pages.html">عرض كل الصفحات ←</a></div><div class="page-list" id="page-list" aria-live="polite"><div class="empty">جارٍ تحميل صفحات المشروع…</div></div></section>
+    <section class="panel" id="image-converter" aria-labelledby="image-title"><h2 id="image-title">تحويل الصور إلى PDF</h2><p class="muted">اختر صور JPG أو PNG، ثم أنشئ ملف PDF مباشرة في المتصفح.</p><div class="upload"><label for="image-files">اختر صورة أو أكثر:</label><input id="image-files" type="file" accept="image/jpeg,image/png,.jpg,.jpeg,.png" multiple></div><div class="file-list" id="file-list" aria-live="polite"></div><div class="actions"><span class="muted" id="count">لم يتم اختيار صور</span><button class="primary" id="convert" type="button" disabled>تحويل إلى PDF</button></div><div id="status" role="status" aria-live="polite"></div></section>
+    <section class="panel" aria-labelledby="pages-title"><div class="section-top"><div><h2 id="pages-title">صفحات المشروع</h2><p class="muted">روابط مباشرة لأهم الصفحات، مع أسماء عربية واضحة.</p></div><a class="button" href="all-pages.html">عرض الكل</a></div><div class="page-list" id="page-list" aria-live="polite"><div class="empty">جارٍ تحميل الصفحات…</div></div></section>
   </main>
-  <footer>QuickConvert — صفحات المشروع وأدواته.</footer>
+  <footer>QuickConvert — أدوات التحويل والصفحات.</footer>
   <script>
-    (() => {
-      const input=document.getElementById('image-files'), list=document.getElementById('file-list'), count=document.getElementById('count'), convert=document.getElementById('convert'), status=document.getElementById('status');
-      let files=[];
-      function renderFiles(){
-        list.replaceChildren();
-        files.forEach((file,index)=>{const row=document.createElement('div');row.className='file-row';const name=document.createElement('span');name.textContent=file.name;const remove=document.createElement('button');remove.type='button';remove.textContent='إزالة';remove.setAttribute('aria-label',`إزالة ${file.name}`);remove.addEventListener('click',()=>{files.splice(index,1);renderFiles();});row.append(name,remove);list.append(row);});
-        count.textContent=files.length?`${files.length} صورة محددة`:'لم يتم اختيار صور';convert.disabled=files.length===0;
-      }
-      input.addEventListener('change',()=>{const selected=Array.from(input.files||[]);const valid=selected.filter(file=>/image\/(jpeg|png)/i.test(file.type)||/\.(jpe?g|png)$/i.test(file.name));status.textContent=selected.length!==valid.length?'تم تجاهل الملفات غير المدعومة. اختر صور JPG أو PNG.':'';files=[...files,...valid];input.value='';renderFiles();});
-      convert.addEventListener('click',async()=>{
-        if(!files.length)return;if(!window.jspdf||!window.jspdf.jsPDF){status.textContent='تعذّر تحميل مكتبة PDF. تحقق من اتصال الإنترنت وحاول مجددًا.';return;}
-        convert.disabled=true;convert.textContent='جارٍ إنشاء الملف…';status.textContent='';
-        try{const {jsPDF}=window.jspdf;let pdf;for(let i=0;i<files.length;i++){
-          const dataUrl=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error(`تعذرت قراءة الملف: ${files[i].name}`));reader.readAsDataURL(files[i]);});
-          const image=await new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error(`تعذر فتح الملف: ${files[i].name}`));img.src=dataUrl;});
-          const orientation=image.width>image.height?'landscape':'portrait';if(!pdf)pdf=new jsPDF({orientation,unit:'pt',format:'a4'});else pdf.addPage('a4',orientation);
-          const pageWidth=pdf.internal.pageSize.getWidth(),pageHeight=pdf.internal.pageSize.getHeight(),scale=Math.min(pageWidth/image.width,pageHeight/image.height),width=image.width*scale,height=image.height*scale;
-          pdf.addImage(dataUrl,files[i].type==='image/png'?'PNG':'JPEG',(pageWidth-width)/2,(pageHeight-height)/2,width,height);
-        }pdf.save('images.pdf');}catch(error){status.textContent=error.message||'حدث خطأ أثناء إنشاء ملف PDF.';}finally{convert.disabled=files.length===0;convert.textContent='تحويل إلى PDF';}
-      });
-      async function loadPages(){
-        const pageList=document.getElementById('page-list');
-        try{const response=await fetch('https://api.github.com/repos/khalidaitsahal27/ccc-repository/git/trees/main?recursive=1',{headers:{Accept:'application/vnd.github+json'}});if(!response.ok)throw new Error('تعذر جلب قائمة الصفحات من GitHub.');const data=await response.json();
-          const pages=(data.tree||[]).filter(item=>item.type==='blob'&&item.path.toLowerCase().endsWith('.html')&&!['index.html','all-pages.html','tools.html'].includes(item.path.toLowerCase())).map(item=>item.path).sort((a,b)=>a.localeCompare(b,'ar'));pageList.replaceChildren();
-          if(!pages.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='لا توجد صفحات إضافية حاليًا.';pageList.append(empty);return;}
-          pages.forEach(path=>{const card=document.createElement('article');card.className='page-card';const top=document.createElement('div');top.className='page-card-top';const icon=document.createElement('span');icon.className='page-icon';icon.setAttribute('aria-hidden','true');icon.textContent=path==='text-to-pdf.html'?'TXT':path==='pdf-to-txt.html'?'PDF':'HTML';const titleWrap=document.createElement('div');titleWrap.style.minWidth='0';const title=document.createElement('div');title.className='page-title';title.textContent=path==='comparison.html'?'مقارنة النقاط':path==='text-to-pdf.html'?'تحويل TXT إلى PDF':path==='pdf-to-txt.html'?'تحويل PDF إلى TXT':path.split('/').pop().replace(/\.html$/i,'').replace(/[-_]/g,' ');const filePath=document.createElement('span');filePath.className='page-path';filePath.textContent=path;titleWrap.append(title,filePath);top.append(icon,titleWrap);const link=document.createElement('a');link.className='button';link.textContent='فتح الصفحة';link.href=`./${path.split('/').map(encodeURIComponent).join('/')}`;card.append(top,link);pageList.append(card);});
-        }catch(error){pageList.replaceChildren();const message=document.createElement('div');message.className='empty';message.textContent=`${error.message} يمكنك تصفح صفحات المستودع من صفحة المكتبة.`;pageList.append(message);}
-      }
-      loadPages();
+    (()=>{
+      const input=document.getElementById('image-files'),list=document.getElementById('file-list'),count=document.getElementById('count'),button=document.getElementById('convert'),status=document.getElementById('status');let files=[];
+      function render(){list.replaceChildren();files.forEach((file,index)=>{const row=document.createElement('div');row.className='file-row';const name=document.createElement('span');name.textContent=file.name;const remove=document.createElement('button');remove.type='button';remove.textContent='إزالة';remove.addEventListener('click',()=>{files.splice(index,1);render();});row.append(name,remove);list.append(row);});count.textContent=files.length?`${files.length} صورة محددة`:'لم يتم اختيار صور';button.disabled=!files.length;}
+      input.addEventListener('change',()=>{const chosen=Array.from(input.files||[]);const valid=chosen.filter(f=>/image\/(jpeg|png)/i.test(f.type)||/\.(jpe?g|png)$/i.test(f.name));status.textContent=valid.length<chosen.length?'تم تجاهل ملفات غير مدعومة. اختر صور JPG أو PNG.':'';files=[...files,...valid];input.value='';render();});
+      button.addEventListener('click',async()=>{if(!files.length)return;if(!window.jspdf?.jsPDF){status.textContent='تعذر تحميل مكتبة PDF؛ تحقق من اتصال الإنترنت.';return;}button.disabled=true;button.textContent='جارٍ التحويل…';status.textContent='';try{const {jsPDF}=window.jspdf;let pdf;for(const file of files){const data=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(Error('تعذرت قراءة صورة.'));r.readAsDataURL(file);});const image=await new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=()=>reject(Error('تعذر فتح صورة.'));i.src=data;});const orientation=image.width>image.height?'landscape':'portrait';if(!pdf)pdf=new jsPDF({orientation,unit:'pt',format:'a4'});else pdf.addPage('a4',orientation);const w=pdf.internal.pageSize.getWidth(),h=pdf.internal.pageSize.getHeight(),scale=Math.min(w/image.width,h/image.height),iw=image.width*scale,ih=image.height*scale;pdf.addImage(data,file.type==='image/png'?'PNG':'JPEG',(w-iw)/2,(h-ih)/2,iw,ih);}pdf.save('images.pdf');}catch(error){status.textContent=error.message||'حدث خطأ أثناء إنشاء PDF.';}finally{button.disabled=!files.length;button.textContent='تحويل إلى PDF';}});
+      const names={'comparison.html':'مقارنة النقاط','text-to-pdf.html':'تحويل النص TXT إلى PDF','pdf-to-txt.html':'استخراج النص من PDF وOCR','tools.html':'مركز الأدوات','all-pages.html':'مكتبة الصفحات','index.html':'الصفحة الرئيسية'};
+      fetch('https://api.github.com/repos/khalidaitsahal27/ccc-repository/git/trees/main?recursive=1',{headers:{Accept:'application/vnd.github+json'}}).then(r=>{if(!r.ok)throw Error('تعذر تحميل قائمة الصفحات.');return r.json();}).then(data=>{const pages=(data.tree||[]).filter(x=>x.type==='blob'&&x.path.toLowerCase().endsWith('.html')&&!['index.html','all-pages.html'].includes(x.path.toLowerCase())).map(x=>x.path).sort((a,b)=>a.localeCompare(b,'ar'));const root=document.getElementById('page-list');root.replaceChildren();if(!pages.length){const e=document.createElement('div');e.className='empty';e.textContent='لا توجد صفحات إضافية.';root.append(e);return;}pages.slice(0,6).forEach(path=>{const card=document.createElement('article');card.className='page-card';const head=document.createElement('div');head.className='page-card-head';const icon=document.createElement('span');icon.className='icon';icon.textContent=path==='pdf-to-txt.html'?'PDF':path==='text-to-pdf.html'?'TXT':'HTML';const label=document.createElement('span');label.className='page-title';label.textContent=names[path]||path.split('/').pop().replace(/\.html$/i,'').replace(/[-_]/g,' ');head.append(icon,label);const a=document.createElement('a');a.className='button';a.href='./'+path.split('/').map(encodeURIComponent).join('/');a.textContent='فتح الصفحة';card.append(head,a);root.append(card);});}).catch(()=>{const root=document.getElementById('page-list');root.replaceChildren();const e=document.createElement('div');e.className='empty';e.textContent='تعذر جلب القائمة الآن. يمكنك استخدام مركز الأدوات أو مكتبة الصفحات.';root.append(e);});
     })();
   </script>
 </body>
