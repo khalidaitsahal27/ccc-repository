@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#10162f">
-  <meta name="description" content="تصفّح جميع صفحات HTML في مشروع QuickConvert.">
+  <meta name="description" content="تصفّح جميع صفحات HTML في مشروع QuickConvert واستخدم أدوات التحويل.">
   <title>مكتبة الصفحات — QuickConvert</title>
   <style>
     :root { color-scheme:light; --ink:#17213d; --muted:#69748c; --primary:#5948e8; --line:#e7e9f2; }
@@ -14,15 +14,24 @@
     .brand { display:flex; align-items:center; gap:9px; font-size:19px; font-weight:800; text-decoration:none; color:var(--ink); }
     .brand-mark { display:grid; place-items:center; width:39px; height:39px; border-radius:12px; color:#fff; background:linear-gradient(145deg,#7666ff,#4e3cdb); font-size:12px; }
     main { max-width:1000px; margin:auto; padding:36px 24px 64px; }
+    .hero { padding:24px; border:1px solid #e8e5ff; border-radius:20px; background:linear-gradient(135deg,#f8f7ff,#fff 72%); box-shadow:0 12px 35px #1b234b08; }
     .eyebrow { display:inline-block; padding:7px 12px; border:1px solid #e8e5ff; border-radius:30px; color:var(--primary); background:#f7f5ff; font-size:12px; font-weight:750; }
     h1 { margin:15px 0 8px; font-size:clamp(30px,5vw,46px); }
     p { color:var(--muted); line-height:1.8; }
     .toolbar { display:flex; align-items:center; justify-content:space-between; gap:14px; margin:25px 0 16px; }
     #page-count { color:var(--muted); font-size:14px; }
-    .button { display:inline-flex; align-items:center; justify-content:center; padding:10px 16px; border:1px solid #e4e0ff; border-radius:9px; color:var(--primary); background:#f7f5ff; font:inherit; font-weight:700; text-decoration:none; }
-    .button:hover { background:#eeebff; }
+    .button { display:inline-flex; align-items:center; justify-content:center; padding:10px 16px; border:1px solid #e4e0ff; border-radius:9px; color:var(--primary); background:#f7f5ff; font:inherit; font-weight:700; text-decoration:none; transition:.15s; }
+    .button:hover { background:#eeebff; transform:translateY(-1px); }
+    .button.primary { color:#fff; border-color:var(--primary); background:var(--primary); }
+    .button.primary:hover { background:#4535ce; }
+    .quick-tools { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin:22px 0 30px; }
+    .tool-card { display:flex; align-items:center; gap:13px; padding:17px; border:1px solid var(--line); border-radius:14px; color:var(--ink); background:#fff; text-decoration:none; box-shadow:0 8px 24px #1b234b08; transition:.15s; }
+    .tool-card:hover { border-color:#c8c1ff; transform:translateY(-2px); box-shadow:0 12px 28px #5948e812; }
+    .tool-icon { display:grid; place-items:center; flex:0 0 44px; height:44px; border-radius:13px; color:var(--primary); background:#f0eeff; font-weight:800; }
+    .tool-card strong,.tool-card small { display:block; }
+    .tool-card small { margin-top:4px; color:var(--muted); line-height:1.6; }
     .page-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; }
-    .page-card { display:flex; flex-direction:column; justify-content:space-between; gap:20px; min-height:170px; padding:18px; border:1px solid var(--line); border-radius:15px; background:linear-gradient(145deg,#fff,#fbfaff); box-shadow:0 10px 28px #1b234b08; transition:transform .15s,border-color .15s,box-shadow .15s; }
+    .page-card { display:flex; flex-direction:column; justify-content:space-between; gap:20px; min-height:170px; padding:18px; border:1px solid var(--line); border-radius:15px; background:linear-gradient(145deg,#fff,#fbfaff); box-shadow:0 8px 24px #1b234b08; transition:transform .15s,border-color .15s,box-shadow .15s; }
     .page-card:hover { transform:translateY(-2px); border-color:#c8c1ff; box-shadow:0 14px 30px #5948e812; }
     .page-heading { display:flex; align-items:center; gap:12px; }
     .page-icon { display:grid; place-items:center; flex:0 0 42px; width:42px; height:42px; border-radius:13px; color:var(--primary); background:#f0eeff; font-size:12px; font-weight:800; }
@@ -32,15 +41,21 @@
     .page-card .button:hover { background:#4535ce; }
     .empty { grid-column:1/-1; padding:20px; border:1px dashed var(--line); border-radius:13px; color:var(--muted); text-align:center; }
     footer { padding:22px; color:var(--muted); text-align:center; font-size:13px; }
-    @media(max-width:600px) { header { padding:16px; } main { padding:26px 16px 44px; } .toolbar { align-items:stretch; flex-direction:column; } .page-list { grid-template-columns:1fr; } }
+    @media(max-width:600px) { header { padding:16px; } main { padding:26px 16px 44px; } .hero { padding:19px; } .toolbar { align-items:stretch; flex-direction:column; } .page-list,.quick-tools { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
-  <header><a class="brand" href="index.html"><span class="brand-mark">QC</span><span>QuickConvert</span></a><a class="button" href="index.html">��لعودة للرئيسية</a></header>
+  <header><a class="brand" href="index.html"><span class="brand-mark">QC</span><span>QuickConvert</span></a><a class="button" href="index.html">العودة للرئيسية</a></header>
   <main>
-    <span class="eyebrow">دليل المشروع</span>
-    <h1>مكتبة الصفحات</h1>
-    <p>هذه قائمة تلقائية بصفحات HTML في مستودع المشروع. ستظهر الصفحات الجديدة هنا بعد إضافتها إلى GitHub.</p>
+    <section class="hero">
+      <span class="eyebrow">دليل المشروع</span>
+      <h1>مكتبة الصفحات</h1>
+      <p>اكتشف أدوات التحويل وصفحات المشروع. تُحدّث قائمة الصفحات تلقائيًا من ملفات HTML الموجودة في المستودع.</p>
+    </section>
+    <nav class="quick-tools" aria-label="أدوات سريعة">
+      <a class="tool-card" href="text-to-pdf.html"><span class="tool-icon">TXT</span><span><strong>تحويل TXT إلى PDF</strong><small>اكتب نصًا أو اختر ملفًا، واضبط تنسيق العربية قبل الحفظ.</small></span></a>
+      <a class="tool-card" href="index.html"><span class="tool-icon">JPG</span><span><strong>تحويل الصور إلى PDF</strong><small>اجمع صور JPG وPNG في ملف PDF واحد.</small></span></a>
+    </nav>
     <div class="toolbar"><span id="page-count">جارٍ تحميل الصفحات…</span><a class="button" href="https://github.com/khalidaitsahal27/ccc-repository">عرض المستودع على GitHub</a></div>
     <div class="page-list" id="page-list" aria-live="polite"><div class="empty">جارٍ تحميل الصفحات…</div></div>
   </main>
@@ -49,33 +64,29 @@
     (async () => {
       const pageList = document.getElementById('page-list');
       const count = document.getElementById('page-count');
-      const names = { 'index.html': 'الرئيسية', 'comparison.html': 'مقارنة النقاط', 'all-pages.html': 'مكتبة الصفحات' };
+      const names = { 'index.html':'الرئيسية', 'comparison.html':'مقارنة النقاط', 'all-pages.html':'مكتبة الصفحات', 'text-to-pdf.html':'تحويل TXT إلى PDF' };
       try {
-        const response = await fetch('https://api.github.com/repos/khalidaitsahal27/ccc-repository/git/trees/main?recursive=1', { headers: { Accept: 'application/vnd.github+json' } });
+        const response = await fetch('https://api.github.com/repos/khalidaitsahal27/ccc-repository/git/trees/main?recursive=1', { headers:{ Accept:'application/vnd.github+json' } });
         if (!response.ok) throw new Error('تعذّر تحميل صفحات المستودع. حاول تحديث الصفحة بعد قليل.');
         const data = await response.json();
-        const pages = (data.tree || []).filter(item => item.type === 'blob' && item.path.toLowerCase().endsWith('.html')).map(item => item.path).sort((a, b) => a.localeCompare(b, 'ar'));
+        const pages = (data.tree || []).filter(item => item.type === 'blob' && item.path.toLowerCase().endsWith('.html')).map(item => item.path).sort((a,b) => a.localeCompare(b,'ar'));
         pageList.replaceChildren();
-        count.textContent = `${pages.length} ${pages.length === 1 ? 'صفحة' : 'صفحة'} في المستودع`;
-        if (!pages.length) {
-          const empty = document.createElement('div'); empty.className = 'empty'; empty.textContent = 'لا توجد صفحات HTML في المستودع حاليًا.'; pageList.append(empty); return;
-        }
+        count.textContent = `${pages.length} صفحة في المستودع`;
+        if (!pages.length) { const empty=document.createElement('div'); empty.className='empty'; empty.textContent='لا توجد صفحات HTML في المستودع حاليًا.'; pageList.append(empty); return; }
         pages.forEach(path => {
-          const card = document.createElement('article'); card.className = 'page-card';
-          const heading = document.createElement('div'); heading.className = 'page-heading';
-          const icon = document.createElement('span'); icon.className = 'page-icon'; icon.setAttribute('aria-hidden', 'true'); icon.textContent = 'HTML';
-          const text = document.createElement('div'); text.style.minWidth = '0';
-          const title = document.createElement('div'); title.className = 'page-title';
-          title.textContent = names[path] || path.split('/').pop().replace(/\.html$/i, '').replace(/[-_]/g, ' ');
-          const filePath = document.createElement('span'); filePath.className = 'page-path'; filePath.textContent = path;
-          text.append(title, filePath); heading.append(icon, text);
-          const link = document.createElement('a'); link.className = 'button'; link.href = `./${path.split('/').map(encodeURIComponent).join('/')}`; link.textContent = 'فتح الصفحة';
-          if (path === 'comparison.html') link.setAttribute('aria-label', 'فتح صفحة comparison.html');
-          card.append(heading, link); pageList.append(card);
+          const card=document.createElement('article'); card.className='page-card';
+          const heading=document.createElement('div'); heading.className='page-heading';
+          const icon=document.createElement('span'); icon.className='page-icon'; icon.setAttribute('aria-hidden','true'); icon.textContent=path==='text-to-pdf.html'?'TXT':'HTML';
+          const text=document.createElement('div'); text.style.minWidth='0';
+          const title=document.createElement('div'); title.className='page-title'; title.textContent=names[path] || path.split('/').pop().replace(/\.html$/i,'').replace(/[-_]/g,' ');
+          const filePath=document.createElement('span'); filePath.className='page-path'; filePath.textContent=path;
+          text.append(title,filePath); heading.append(icon,text);
+          const link=document.createElement('a'); link.className='button'; link.href=`./${path.split('/').map(encodeURIComponent).join('/')}`; link.textContent='فتح الصفحة';
+          card.append(heading,link); pageList.append(card);
         });
       } catch (error) {
-        pageList.replaceChildren(); count.textContent = 'تعذّر تحميل القائمة';
-        const message = document.createElement('div'); message.className = 'empty'; message.textContent = error.message; pageList.append(message);
+        pageList.replaceChildren(); count.textContent='تعذّر تحميل القائمة';
+        const message=document.createElement('div'); message.className='empty'; message.textContent=error.message; pageList.append(message);
       }
     })();
   </script>

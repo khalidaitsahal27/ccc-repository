@@ -4,99 +4,131 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#10162f">
-  <meta name="description" content="حوّل ملفات TXT أو النص المكتوب إلى ملف PDF بسهولة.">
+  <meta name="description" content="حوّل ملفات TXT أو النص المكتوب إلى ملف PDF مع إعدادات مناسبة للعربية.">
   <title>تحويل TXT إلى PDF — QuickConvert</title>
   <style>
     :root { color-scheme:light; --ink:#17213d; --muted:#69748c; --primary:#5948e8; --line:#e7e9f2; --surface:#f7f8fc; }
     * { box-sizing:border-box; }
-    body { margin:0; min-height:100vh; color:var(--ink); background:linear-gradient(180deg,#f8f7ff 0,#fff 340px); font-family:"Segoe UI",Tahoma,Arial,sans-serif; }
-    header { display:flex; align-items:center; justify-content:space-between; max-width:1000px; margin:auto; padding:22px 24px; }
+    body { margin:0; min-height:100vh; color:var(--ink); background:radial-gradient(ellipse at 50% -10%,#eeebff 0,transparent 55%),#fbfbfe; font-family:"Segoe UI",Tahoma,Arial,sans-serif; }
+    header { display:flex; align-items:center; justify-content:space-between; max-width:1040px; margin:auto; padding:22px 24px; }
     .brand { display:flex; align-items:center; gap:9px; color:var(--ink); font-size:19px; font-weight:800; text-decoration:none; }
-    .brand-mark { display:grid; place-items:center; width:39px; height:39px; border-radius:12px; color:#fff; background:linear-gradient(145deg,#7666ff,#4e3cdb); font-size:12px; }
-    main { max-width:850px; margin:auto; padding:34px 24px 60px; }
+    .brand-mark { display:grid; place-items:center; width:39px; height:39px; border-radius:12px; color:#fff; background:linear-gradient(145deg,#7666ff,#4e3cdb); font-size:12px; box-shadow:0 6px 16px #5948e840; }
+    main { max-width:900px; margin:auto; padding:34px 24px 60px; }
+    .hero { text-align:center; margin-bottom:25px; }
     .eyebrow { display:inline-block; padding:7px 12px; border:1px solid #e8e5ff; border-radius:30px; color:var(--primary); background:#f7f5ff; font-size:12px; font-weight:750; }
-    h1 { margin:15px 0 8px; font-size:clamp(30px,5vw,44px); }
+    h1 { margin:15px 0 8px; font-size:clamp(30px,5vw,44px); letter-spacing:-.7px; }
     .intro,.hint { color:var(--muted); line-height:1.8; }
-    .panel { margin-top:24px; padding:24px; border:1px solid var(--line); border-radius:18px; background:#fff; box-shadow:0 12px 35px #1b234b0a; }
-    label { display:block; margin-bottom:8px; font-weight:700; }
-    input[type=file] { display:block; width:100%; margin:9px 0 20px; padding:12px; border:1px dashed #cfd3e3; border-radius:11px; background:var(--surface); }
-    textarea { display:block; width:100%; min-height:260px; resize:vertical; padding:15px; border:1px solid #dfe2ed; border-radius:11px; color:var(--ink); background:#fff; font:15px/1.8 "Segoe UI",Tahoma,Arial,sans-serif; }
-    textarea:focus,input:focus { outline:3px solid #5948e826; border-color:var(--primary); }
-    .actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-top:17px; }
+    .intro { max-width:700px; margin:0 auto; }
+    .panel { padding:25px; border:1px solid var(--line); border-radius:20px; background:#fff; box-shadow:0 18px 50px #1b234b0d; }
+    .panel-heading { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+    .panel-icon { display:grid; place-items:center; width:44px; height:44px; border-radius:14px; color:var(--primary); background:#f0eeff; font-weight:800; }
+    .panel-heading h2 { margin:0; font-size:18px; }
+    .panel-heading p { margin:4px 0 0; color:var(--muted); font-size:13px; }
+    label { display:block; margin-bottom:8px; font-size:14px; font-weight:750; }
+    input[type=file] { display:block; width:100%; margin:9px 0 20px; padding:13px; border:1px dashed #c5c8dc; border-radius:12px; background:var(--surface); }
+    textarea { display:block; width:100%; min-height:270px; resize:vertical; padding:17px; border:1px solid #dfe2ed; border-radius:13px; color:var(--ink); background:#fff; font:16px/1.9 "Noto Naskh Arabic","Amiri","Traditional Arabic","Segoe UI",Tahoma,Arial,serif; }
+    textarea:focus,input:focus,select:focus { outline:3px solid #5948e826; border-color:var(--primary); }
+    .settings { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:18px; padding:16px; border:1px solid var(--line); border-radius:13px; background:#fbfbfe; }
+    .setting label { margin-bottom:7px; font-size:12px; }
+    select { width:100%; min-height:42px; padding:8px 10px; border:1px solid #dfe2ed; border-radius:9px; color:var(--ink); background:#fff; font:inherit; }
+    .actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-top:18px; }
     .buttons { display:flex; gap:9px; }
-    button,.button { display:inline-flex; align-items:center; justify-content:center; min-height:43px; padding:10px 16px; border:1px solid #e4e0ff; border-radius:9px; color:var(--primary); background:#f7f5ff; font:inherit; font-weight:700; text-decoration:none; cursor:pointer; }
-    button.primary { border-color:var(--primary); color:#fff; background:var(--primary); }
-    button:hover,.button:hover { background:#eeebff; }
-    button.primary:hover { background:#4535ce; }
-    #status { min-height:22px; margin-top:10px; color:#bd3445; }
-    .preview { margin-top:22px; padding:20px; border:1px solid var(--line); border-radius:13px; background:var(--surface); }
-    .preview h2 { margin:0 0 12px; font-size:16px; }
-    #preview-text { min-height:60px; max-height:220px; overflow:auto; margin:0; white-space:pre-wrap; overflow-wrap:anywhere; color:#34405b; font:14px/1.8 "Segoe UI",Tahoma,Arial,sans-serif; }
+    button,.button { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:10px 16px; border:1px solid #e4e0ff; border-radius:10px; color:var(--primary); background:#f7f5ff; font:inherit; font-weight:700; text-decoration:none; cursor:pointer; transition:.15s; }
+    button:hover,.button:hover { background:#eeebff; transform:translateY(-1px); }
+    button.primary { border-color:var(--primary); color:#fff; background:linear-gradient(135deg,#6655f0,#4d3bd6); box-shadow:0 7px 17px #5948e833; }
+    button.primary:hover { background:linear-gradient(135deg,#5948e8,#4030c4); }
+    #status { min-height:22px; margin-top:10px; color:#69748c; font-size:13px; }
+    .preview { margin-top:21px; padding:20px; border:1px solid var(--line); border-radius:14px; background:linear-gradient(145deg,#fbfaff,#f7f8fc); }
+    .preview-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
+    .preview h2 { margin:0; font-size:15px; }
+    .preview-badge { padding:5px 9px; border-radius:20px; color:#27836e; background:#e7faf5; font-size:11px; }
+    #preview-text { min-height:60px; max-height:250px; overflow:auto; margin:0; color:#34405b; font-family:"Noto Naskh Arabic","Amiri","Traditional Arabic","Segoe UI",Tahoma,Arial,serif; font-size:var(--print-font-size,16px); line-height:var(--print-line-height,1.9); white-space:pre-wrap; overflow-wrap:anywhere; unicode-bidi:plaintext; }
+    .privacy { margin-top:15px; padding:12px 14px; border-radius:11px; color:#27836e; background:#effaf6; font-size:12px; line-height:1.7; }
     footer { padding:22px; color:var(--muted); text-align:center; font-size:13px; }
-    @media(max-width:600px) { header { padding:16px; } main { padding:24px 16px 42px; } .panel { padding:17px; } .actions { align-items:stretch; flex-direction:column; } .buttons { flex-direction:column; } .buttons button { width:100%; } }
+    @media(max-width:650px) { header { padding:16px; } main { padding:24px 16px 42px; } .panel { padding:17px; } .settings { grid-template-columns:1fr; } .actions { align-items:stretch; flex-direction:column; } .buttons { flex-direction:column; } .buttons button { width:100%; } }
+    @page { size:A4; margin:20mm 18mm; }
     @media print {
-      @page { margin:20mm; }
-      body { display:block; min-height:auto; color:#111; background:#fff; }
+      html,body { width:auto; min-height:0; color:#111; background:#fff !important; }
+      body { display:block; font-family:"Noto Naskh Arabic","Amiri","Traditional Arabic","Segoe UI",Tahoma,Arial,serif; }
       header,.hero,.panel > :not(.preview),footer { display:none !important; }
       main { max-width:none; margin:0; padding:0; }
-      .panel { margin:0; padding:0; border:0; box-shadow:none; }
-      .preview { margin:0; padding:0; border:0; background:#fff; }
-      .preview h2 { margin-bottom:12mm; font-size:16pt; }
-      #preview-text { max-height:none; overflow:visible; color:#111; font-size:12pt; line-height:1.7; white-space:pre-wrap; overflow-wrap:anywhere; }
+      .panel { margin:0; padding:0; border:0; border-radius:0; box-shadow:none; }
+      .preview { margin:0; padding:0; border:0; border-radius:0; background:#fff; }
+      .preview-head { margin:0 0 11mm; }
+      .preview h2 { margin:0; color:#111; font-size:16pt; }
+      .preview-badge { display:none; }
+      #preview-text { max-height:none; overflow:visible; color:#111; font-size:var(--print-font-size,16px); line-height:var(--print-line-height,1.9); white-space:pre-wrap; overflow-wrap:anywhere; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
     }
   </style>
 </head>
 <body>
-  <header><a class="brand" href="index.html"><span class="brand-mark">TXT</span><span>QuickConvert</span></a><a class="button" href="index.html">العودة للرئيسية</a></header>
+  <header><a class="brand" href="index.html"><span class="brand-mark">TXT</span><span>QuickConvert</span></a><a class="button" href="all-pages.html">مكتبة الصفحات</a></header>
   <main>
-    <div class="hero"><span class="eyebrow">أداة نصية مجانية</span><h1>تحويل TXT إلى PDF</h1><p class="intro">اختر ملف TXT أو اكتب نصك، ثم اضغط «حفظ كـ PDF». ستظهر نافذة الطباعة؛ اختر «حفظ بتنسيق PDF» لحفظ الملف على جهازك. يدعم العرض النص العربي واتجاه الكتابة من اليمين إلى اليسار.</p></div>
+    <div class="hero"><span class="eyebrow">أداة نصية مجانية</span><h1>تحويل TXT إلى PDF</h1><p class="intro">اختر ملف TXT أو اكتب نصك، واضبط حجم الخط ومحاذاة النص. عند الحفظ، اختر «حفظ بتنسيق PDF» من نافذة الطباعة. يُطبع النص العربي باتجاهه الصحيح مع الحفاظ على الأسطر.</p></div>
     <section class="panel" aria-label="أداة تحويل النص إلى PDF">
+      <div class="panel-heading"><span class="panel-icon" aria-hidden="true">TXT</span><div><h2>محتوى المستند</h2><p>النص يبقى على جهازك ولا يُرفع إلى الخادم.</p></div></div>
       <label for="txt-file">اختيار ملف نصي TXT (اختياري)</label>
       <input id="txt-file" type="file" accept=".txt,text/plain">
-      <label for="text-input">النص المراد تحويله</label>
+      <label for="text-input">اكتب النص المراد تحويله</label>
       <textarea id="text-input" dir="auto" placeholder="اكتب النص هنا أو اختر ملف TXT أعلاه…"></textarea>
+      <div class="settings" aria-label="إعدادات تنسيق PDF">
+        <div class="setting"><label for="font-size">حجم الخط عند الطباعة</label><select id="font-size"><option value="14">صغير — 14</option><option value="16" selected>متوسط — 16</option><option value="18">كبير — 18</option><option value="20">كبير جدًا — 20</option></select></div>
+        <div class="setting"><label for="text-align">محاذاة النص</label><select id="text-align"><option value="right" selected>يمين (مناسب للعربية)</option><option value="center">توسيط</option><option value="left">يسار</option><option value="start">تلقائية حسب اتجاه النص</option></select></div>
+        <div class="setting"><label for="line-height">تباعد الأسطر</label><select id="line-height"><option value="1.6">مضغوط</option><option value="1.9" selected>مريح</option><option value="2.2">واسع</option></select></div>
+      </div>
       <div class="actions"><span class="hint" id="char-count">0 حرف</span><div class="buttons"><button id="clear" type="button">مسح النص</button><button class="primary" id="save-pdf" type="button">حفظ كـ PDF</button></div></div>
       <div id="status" role="status" aria-live="polite"></div>
-      <div class="preview"><h2>معاينة المستند</h2><pre id="preview-text" dir="auto">سيظهر النص هنا بعد كتابته أو اختيار ملف TXT.</pre></div>
+      <div class="preview"><div class="preview-head"><h2>معاينة المستند</h2><span class="preview-badge">جاهز للطباعة</span></div><pre id="preview-text" dir="auto">سيظهر النص هنا بعد كتابته أو اختيار ملف TXT.</pre></div>
+      <div class="privacy">تلميح: في نافذة الطباعة اختر «حفظ بتنسيق PDF». لتحسين إخراج العربية، استخدم متصفحًا حديثًا وتأكد من اختيار اتجاه النص المناسب.</div>
     </section>
   </main>
   <footer>تتم معالجة النص في متصفحك ولا يتم رفع الملفات إلى الخادم.</footer>
   <script>
     (() => {
-      const fileInput = document.getElementById('txt-file');
-      const textInput = document.getElementById('text-input');
-      const preview = document.getElementById('preview-text');
-      const count = document.getElementById('char-count');
-      const status = document.getElementById('status');
-      const placeholder = 'سيظهر النص هنا بعد كتابته أو اختيار ملف TXT.';
+      const fileInput=document.getElementById('txt-file');
+      const textInput=document.getElementById('text-input');
+      const preview=document.getElementById('preview-text');
+      const count=document.getElementById('char-count');
+      const status=document.getElementById('status');
+      const placeholder='سيظهر النص هنا بعد كتابته أو اختيار ملف TXT.';
+      const root=document.documentElement;
+      const size=document.getElementById('font-size');
+      const align=document.getElementById('text-align');
+      const lineHeight=document.getElementById('line-height');
 
       function updatePreview() {
-        preview.textContent = textInput.value || placeholder;
-        count.textContent = `${textInput.value.length.toLocaleString('ar')} حرف`;
+        preview.textContent=textInput.value || placeholder;
+        preview.dir='auto';
+        count.textContent=`${textInput.value.length.toLocaleString('ar')} حرف`;
       }
-      textInput.addEventListener('input', updatePreview);
-      fileInput.addEventListener('change', () => {
-        const file = fileInput.files && fileInput.files[0];
-        if (!file) return;
-        if (!/\.txt$/i.test(file.name) && file.type !== 'text/plain') {
-          status.textContent = 'يرجى اختيار ملف نصي بامتداد TXT.';
-          fileInput.value = '';
-          return;
+      function updatePrintStyle() {
+        root.style.setProperty('--print-font-size',`${size.value}px`);
+        root.style.setProperty('--print-line-height',lineHeight.value);
+        preview.style.textAlign=align.value;
+      }
+      textInput.addEventListener('input',updatePreview);
+      [size,align,lineHeight].forEach(control=>control.addEventListener('change',updatePrintStyle));
+      fileInput.addEventListener('change',()=>{
+        const file=fileInput.files && fileInput.files[0];
+        if(!file) return;
+        if(!/\.txt$/i.test(file.name) && file.type!=='text/plain') {
+          status.textContent='يرجى اختيار ملف نصي بامتداد TXT.'; fileInput.value=''; return;
         }
-        const reader = new FileReader();
-        reader.onload = () => { textInput.value = String(reader.result || '').replace(/^\uFEFF/, ''); updatePreview(); status.textContent = ''; };
-        reader.onerror = () => { status.textContent = 'تعذرت قراءة الملف. حاول اختيار الملف مرة أخرى.'; };
-        reader.readAsText(file, 'UTF-8');
+        const reader=new FileReader();
+        reader.onload=()=>{ textInput.value=String(reader.result || '').replace(/^\uFEFF/,''); updatePreview(); status.textContent='تم تحميل الملف النصي.'; };
+        reader.onerror=()=>{ status.textContent='تعذرت قراءة الملف. حاول اختيار الملف مرة أخرى.'; };
+        reader.readAsText(file,'UTF-8');
       });
-      document.getElementById('clear').addEventListener('click', () => {
-        textInput.value = ''; fileInput.value = ''; status.textContent = ''; updatePreview(); textInput.focus();
+      document.getElementById('clear').addEventListener('click',()=>{
+        textInput.value=''; fileInput.value=''; status.textContent=''; updatePreview(); textInput.focus();
       });
-      document.getElementById('save-pdf').addEventListener('click', () => {
-        if (!textInput.value.trim()) { status.textContent = 'أدخل نصًا أو اختر ملف TXT أولًا.'; textInput.focus(); return; }
-        status.textContent = 'في نافذة الطباعة، اختر «حفظ بتنسيق PDF» لحفظ المستند.';
+      document.getElementById('save-pdf').addEventListener('click',()=>{
+        if(!textInput.value.trim()) { status.textContent='أدخل نصًا أو اختر ملف TXT أولًا.'; textInput.focus(); return; }
+        status.textContent='في نافذة الطباعة، اختر «حفظ بتنسيق PDF» لحفظ المستند.';
         window.print();
       });
       updatePreview();
+      updatePrintStyle();
     })();
   </script>
 </body>
