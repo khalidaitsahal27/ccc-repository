@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10162f">
+  <meta name="description" content="حوّل ملفات TXT أو النص المكتوب إلى ملف PDF بسهولة.">
+  <title>تحويل TXT إلى PDF — QuickConvert</title>
+  <style>
+    :root { color-scheme:light; --ink:#17213d; --muted:#69748c; --primary:#5948e8; --line:#e7e9f2; --surface:#f7f8fc; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; color:var(--ink); background:linear-gradient(180deg,#f8f7ff 0,#fff 340px); font-family:"Segoe UI",Tahoma,Arial,sans-serif; }
+    header { display:flex; align-items:center; justify-content:space-between; max-width:1000px; margin:auto; padding:22px 24px; }
+    .brand { display:flex; align-items:center; gap:9px; color:var(--ink); font-size:19px; font-weight:800; text-decoration:none; }
+    .brand-mark { display:grid; place-items:center; width:39px; height:39px; border-radius:12px; color:#fff; background:linear-gradient(145deg,#7666ff,#4e3cdb); font-size:12px; }
+    main { max-width:850px; margin:auto; padding:34px 24px 60px; }
+    .eyebrow { display:inline-block; padding:7px 12px; border:1px solid #e8e5ff; border-radius:30px; color:var(--primary); background:#f7f5ff; font-size:12px; font-weight:750; }
+    h1 { margin:15px 0 8px; font-size:clamp(30px,5vw,44px); }
+    .intro,.hint { color:var(--muted); line-height:1.8; }
+    .panel { margin-top:24px; padding:24px; border:1px solid var(--line); border-radius:18px; background:#fff; box-shadow:0 12px 35px #1b234b0a; }
+    label { display:block; margin-bottom:8px; font-weight:700; }
+    input[type=file] { display:block; width:100%; margin:9px 0 20px; padding:12px; border:1px dashed #cfd3e3; border-radius:11px; background:var(--surface); }
+    textarea { display:block; width:100%; min-height:260px; resize:vertical; padding:15px; border:1px solid #dfe2ed; border-radius:11px; color:var(--ink); background:#fff; font:15px/1.8 "Segoe UI",Tahoma,Arial,sans-serif; }
+    textarea:focus,input:focus { outline:3px solid #5948e826; border-color:var(--primary); }
+    .actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-top:17px; }
+    .buttons { display:flex; gap:9px; }
+    button,.button { display:inline-flex; align-items:center; justify-content:center; min-height:43px; padding:10px 16px; border:1px solid #e4e0ff; border-radius:9px; color:var(--primary); background:#f7f5ff; font:inherit; font-weight:700; text-decoration:none; cursor:pointer; }
+    button.primary { border-color:var(--primary); color:#fff; background:var(--primary); }
+    button:hover,.button:hover { background:#eeebff; }
+    button.primary:hover { background:#4535ce; }
+    #status { min-height:22px; margin-top:10px; color:#bd3445; }
+    .preview { margin-top:22px; padding:20px; border:1px solid var(--line); border-radius:13px; background:var(--surface); }
+    .preview h2 { margin:0 0 12px; font-size:16px; }
+    #preview-text { min-height:60px; max-height:220px; overflow:auto; margin:0; white-space:pre-wrap; overflow-wrap:anywhere; color:#34405b; font:14px/1.8 "Segoe UI",Tahoma,Arial,sans-serif; }
+    footer { padding:22px; color:var(--muted); text-align:center; font-size:13px; }
+    @media(max-width:600px) { header { padding:16px; } main { padding:24px 16px 42px; } .panel { padding:17px; } .actions { align-items:stretch; flex-direction:column; } .buttons { flex-direction:column; } .buttons button { width:100%; } }
+    @media print {
+      @page { margin:20mm; }
+      body { display:block; min-height:auto; color:#111; background:#fff; }
+      header,.hero,.panel > :not(.preview),footer { display:none !important; }
+      main { max-width:none; margin:0; padding:0; }
+      .panel { margin:0; padding:0; border:0; box-shadow:none; }
+      .preview { margin:0; padding:0; border:0; background:#fff; }
+      .preview h2 { margin-bottom:12mm; font-size:16pt; }
+      #preview-text { max-height:none; overflow:visible; color:#111; font-size:12pt; line-height:1.7; white-space:pre-wrap; overflow-wrap:anywhere; }
+    }
+  </style>
+</head>
+<body>
+  <header><a class="brand" href="index.html"><span class="brand-mark">TXT</span><span>QuickConvert</span></a><a class="button" href="index.html">العودة للرئيسية</a></header>
+  <main>
+    <div class="hero"><span class="eyebrow">أداة نصية مجانية</span><h1>تحويل TXT إلى PDF</h1><p class="intro">اختر ملف TXT أو اكتب نصك، ثم اضغط «حفظ كـ PDF». ستظهر نافذة الطباعة؛ اختر «حفظ بتنسيق PDF» لحفظ الملف على جهازك. يدعم العرض النص العربي واتجاه الكتابة من اليمين إلى اليسار.</p></div>
+    <section class="panel" aria-label="أداة تحويل النص إلى PDF">
+      <label for="txt-file">اختيار ملف نصي TXT (اختياري)</label>
+      <input id="txt-file" type="file" accept=".txt,text/plain">
+      <label for="text-input">النص المراد تحويله</label>
+      <textarea id="text-input" dir="auto" placeholder="اكتب النص هنا أو اختر ملف TXT أعلاه…"></textarea>
+      <div class="actions"><span class="hint" id="char-count">0 حرف</span><div class="buttons"><button id="clear" type="button">مسح النص</button><button class="primary" id="save-pdf" type="button">حفظ كـ PDF</button></div></div>
+      <div id="status" role="status" aria-live="polite"></div>
+      <div class="preview"><h2>معاينة المستند</h2><pre id="preview-text" dir="auto">سيظهر النص هنا بعد كتابته أو اختيار ملف TXT.</pre></div>
+    </section>
+  </main>
+  <footer>تتم معالجة النص في متصفحك ولا يتم رفع الملفات إلى الخادم.</footer>
+  <script>
+    (() => {
+      const fileInput = document.getElementById('txt-file');
+      const textInput = document.getElementById('text-input');
+      const preview = document.getElementById('preview-text');
+      const count = document.getElementById('char-count');
+      const status = document.getElementById('status');
+      const placeholder = 'سيظهر النص هنا بعد كتابته أو اختيار ملف TXT.';
+
+      function updatePreview() {
+        preview.textContent = textInput.value || placeholder;
+        count.textContent = `${textInput.value.length.toLocaleString('ar')} حرف`;
+      }
+      textInput.addEventListener('input', updatePreview);
+      fileInput.addEventListener('change', () => {
+        const file = fileInput.files && fileInput.files[0];
+        if (!file) return;
+        if (!/\.txt$/i.test(file.name) && file.type !== 'text/plain') {
+          status.textContent = 'يرجى اختيار ملف نصي بامتداد TXT.';
+          fileInput.value = '';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => { textInput.value = String(reader.result || '').replace(/^\uFEFF/, ''); updatePreview(); status.textContent = ''; };
+        reader.onerror = () => { status.textContent = 'تعذرت قراءة الملف. حاول اختيار الملف مرة أخرى.'; };
+        reader.readAsText(file, 'UTF-8');
+      });
+      document.getElementById('clear').addEventListener('click', () => {
+        textInput.value = ''; fileInput.value = ''; status.textContent = ''; updatePreview(); textInput.focus();
+      });
+      document.getElementById('save-pdf').addEventListener('click', () => {
+        if (!textInput.value.trim()) { status.textContent = 'أدخل نصًا أو اختر ملف TXT أولًا.'; textInput.focus(); return; }
+        status.textContent = 'في نافذة الطباعة، اختر «حفظ بتنسيق PDF» لحفظ المستند.';
+        window.print();
+      });
+      updatePreview();
+    })();
+  </script>
+</body>
+</html>
